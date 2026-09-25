@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Instrument_Sans } from "next/font/google";
-import "./globals.css";
+import "./globals.scss";
 
 const display = Bricolage_Grotesque({
   subsets: ["latin"],
