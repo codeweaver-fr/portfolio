@@ -22,65 +22,39 @@ export function Hero() {
 		offset: ["start start", "end end"],
 	});
 
-	/* ======================================================
-	   SCROLL GLOBAL
-	====================================================== */
-
 	const smoothProgress = useSpring(scrollYProgress, {
-		stiffness: 180,
-		damping: 34,
-		mass: 0.18,
+		stiffness: 400,
+		damping: 40,
+		mass: 1,
+		restDelta: 0.0005,
 	});
 
-	const progress = reduceMotion
-		? scrollYProgress
-		: smoothProgress;
+	const progress = reduceMotion ? scrollYProgress : smoothProgress;
 
-	/*
-	 * 0 → 3 %   : micro respiration
-	 * 3 → 64 %  : mouvement principal
-	 * 64 → 100% : transition vers la section suivante
-	 */
 	const timeline = [0, 0.03, 0.64, 1];
-
-	/* ======================================================
-	   MOUVEMENT COMMUN
-	====================================================== */
 
 	const sceneY = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, -68, -96],
+		reduceMotion ? [0, 0, 0, 0] : [0, 0, -68, -96],
 	);
-
-	/* ======================================================
-	   FOND
-	====================================================== */
 
 	const depthX = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, -8, -18],
+		reduceMotion ? [0, 0, 0, 0] : [0, 0, -8, -18],
 	);
 
 	const depthY = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, 12, 25],
+		reduceMotion ? [0, 0, 0, 0] : [0, 0, 12, 25],
 	);
 
 	const depthScale = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [1.05, 1.05, 1.05, 1.05]
-			: [1.05, 1.05, 1.068, 1.09],
+		reduceMotion ? [1.05, 1.05, 1.05, 1.05] : [1.05, 1.05, 1.068, 1.09],
 	);
 
 	const depthOpacity = useTransform(
@@ -89,40 +63,28 @@ export function Hero() {
 		[1, 1, 1, 0.76, 0.45],
 	);
 
-	/* ======================================================
-	   FRAGMENTS DU FOND
-	====================================================== */
-
 	const fragmentsX = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, 17, 34],
+		reduceMotion ? [0, 0, 0, 0] : [0, 0, 17, 34],
 	);
 
 	const fragmentsY = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, -18, -36],
+		reduceMotion ? [0, 0, 0, 0] : [0, 0, -18, -36],
 	);
 
 	const fragmentsRotate = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, 0.45, 0.9],
+		reduceMotion ? [0, 0, 0, 0] : [0, 0, 0.45, 0.9],
 	);
 
 	const fragmentsScale = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [1.02, 1.02, 1.02, 1.02]
-			: [1.02, 1.02, 1.035, 1.052],
+		reduceMotion ? [1.02, 1.02, 1.02, 1.02] : [1.02, 1.02, 1.035, 1.052],
 	);
 
 	const fragmentsOpacity = useTransform(
@@ -131,16 +93,10 @@ export function Hero() {
 		[0.16, 0.16, 0.19, 0.07, 0],
 	);
 
-	/* ======================================================
-	   TITRE
-	====================================================== */
-
 	const titleX = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, -4, -9],
+		reduceMotion ? [0, 0, 0, 0] : [0, 0, -4, -9],
 	);
 
 	const titleOpacity = useTransform(
@@ -149,93 +105,59 @@ export function Hero() {
 		[1, 1, 1, 0.42, 0],
 	);
 
-	/* ======================================================
-	   VERRE 01
-	====================================================== */
-
 	const shardOneX = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, -10, -20],
+		reduceMotion ? [0, 0, 0, 0] : [0, 0, -10, -20],
 	);
 
 	const shardOneRotate = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [-4, -4, -4, -4]
-			: [-4, -4, -4.65, -5.4],
+		reduceMotion ? [-4, -4, -4, -4] : [-4, -4, -4.65, -5.4],
 	);
 
 	const shardOneScale = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [1, 1, 1, 1]
-			: [1, 1, 1.01, 1.02],
+		reduceMotion ? [1, 1, 1, 1] : [1, 1, 1.01, 1.02],
 	);
-
-	/* ======================================================
-	   VERRE 02
-	====================================================== */
 
 	const shardTwoX = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, 10, 22],
+		reduceMotion ? [0, 0, 0, 0] : [0, 0, 10, 22],
 	);
 
 	const shardTwoRotate = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [3, 3, 3, 3]
-			: [3, 3, 3.7, 4.4],
+		reduceMotion ? [3, 3, 3, 3] : [3, 3, 3.7, 4.4],
 	);
 
 	const shardTwoScale = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [1, 1, 1, 1]
-			: [1, 1, 1.009, 1.018],
+		reduceMotion ? [1, 1, 1, 1] : [1, 1, 1.009, 1.018],
 	);
-
-	/* ======================================================
-	   VERRE 03
-	====================================================== */
 
 	const shardThreeX = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, 14, 26],
+		reduceMotion ? [0, 0, 0, 0] : [0, 0, 14, 26],
 	);
 
 	const shardThreeRotate = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [-2, -2, -2, -2]
-			: [-2, -2, -1.1, 0],
+		reduceMotion ? [-2, -2, -2, -2] : [-2, -2, -1.1, 0],
 	);
 
 	const shardThreeScale = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [1, 1, 1, 1]
-			: [1, 1, 1.012, 1.022],
+		reduceMotion ? [1, 1, 1, 1] : [1, 1, 1.012, 1.022],
 	);
-
-	/* ======================================================
-	   VAGUE LUMINEUSE
-	====================================================== */
 
 	const sweepX = useTransform(
 		progress,
@@ -256,17 +178,13 @@ export function Hero() {
 	const sweepRotate = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [-15, -15, -15, -15]
-			: [-15, -15, -12.5, -10],
+		reduceMotion ? [-15, -15, -15, -15] : [-15, -15, -12.5, -10],
 	);
 
 	const sweepScale = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [0.8, 0.8, 0.8, 0.8]
-			: [0.8, 0.8, 1.05, 1.22],
+		reduceMotion ? [0.8, 0.8, 0.8, 0.8] : [0.8, 0.8, 1.05, 1.22],
 	);
 
 	const sweepOpacity = useTransform(
@@ -275,32 +193,22 @@ export function Hero() {
 		[0, 0, 0.55, 0.6, 0.16, 0],
 	);
 
-	/* ======================================================
-	   TRACE ORANGE
-	====================================================== */
-
 	const fractureX = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, -15, -30],
+		reduceMotion ? [0, 0, 0, 0] : [0, 0, -15, -30],
 	);
 
 	const fractureY = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, -7, -14],
+		reduceMotion ? [0, 0, 0, 0] : [0, 0, -7, -14],
 	);
 
 	const fractureScaleX = useTransform(
 		progress,
 		timeline,
-		reduceMotion
-			? [0.85, 0.85, 0.85, 0.85]
-			: [0.85, 0.85, 1.02, 1.1],
+		reduceMotion ? [0.85, 0.85, 0.85, 0.85] : [0.85, 0.85, 1.02, 1.1],
 	);
 
 	const fractureOpacity = useTransform(
@@ -309,19 +217,11 @@ export function Hero() {
 		[0.45, 0.45, 0.82, 0.18, 0],
 	);
 
-	/* ======================================================
-	   SORTIE
-	====================================================== */
-
 	const exitWashOpacity = useTransform(
 		progress,
 		[0, 0.7, 0.88, 1],
 		[0, 0, 0.34, 1],
 	);
-
-	/* ======================================================
-	   UI
-	====================================================== */
 
 	const kickerOpacity = useTransform(
 		progress,
@@ -335,58 +235,74 @@ export function Hero() {
 		[1, 1, 0.68, 0],
 	);
 
-	const scrollOpacity = useTransform(
-		progress,
-		[0, 0.025, 0.1],
-		[1, 0.7, 0],
-	);
+	const scrollOpacity = useTransform(progress, [0, 0.025, 0.1], [1, 0.7, 0]);
 
 	/* ======================================================
-	   SOURIS
+	   TILT 3D DE LA SCÈNE — profondeur caméra au scroll + souris
+	   (angle volontairement très faible, max ~2.6°)
 	====================================================== */
 
-	function handlePointerMove(
-		event: PointerEvent<HTMLDivElement>,
-	) {
+	const stageTiltX = useTransform(
+		progress,
+		timeline,
+		reduceMotion ? [0, 0, 0, 0] : [0, 0, -1.4, -2.6],
+	);
+
+	const tiltPointerX = useSpring(0, {
+		stiffness: 120,
+		damping: 18,
+		mass: 0.4,
+	});
+
+	const tiltPointerY = useSpring(0, {
+		stiffness: 120,
+		damping: 18,
+		mass: 0.4,
+	});
+
+	/* ======================================================
+	   ENTRÉE AU MONTAGE
+	====================================================== */
+
+	const easeOut = [0.16, 1, 0.3, 1] as const;
+
+	const fadeUp = {
+		hidden: { opacity: 0, y: reduceMotion ? 0 : 24 },
+		show: (delay: number) => ({
+			opacity: 1,
+			y: 0,
+			transition: { duration: reduceMotion ? 0 : 1, delay, ease: easeOut },
+		}),
+	};
+
+	const fadeIn = {
+		hidden: { opacity: 0 },
+		show: (delay: number) => ({
+			opacity: 1,
+			transition: { duration: reduceMotion ? 0 : 1.2, delay, ease: easeOut },
+		}),
+	};
+
+	function handlePointerMove(event: PointerEvent<HTMLDivElement>) {
 		if (!stageRef.current || reduceMotion) {
 			return;
 		}
 
-		const rect =
-			stageRef.current.getBoundingClientRect();
+		const rect = stageRef.current.getBoundingClientRect();
 
-		const x =
-			((event.clientX - rect.left) /
-				rect.width) *
-			100;
-
-		const y =
-			((event.clientY - rect.top) /
-				rect.height) *
-			100;
+		const x = ((event.clientX - rect.left) / rect.width) * 100;
+		const y = ((event.clientY - rect.top) / rect.height) * 100;
 
 		const dx = (x - 50) * 0.085;
 		const dy = (y - 50) * 0.07;
 
-		stageRef.current.style.setProperty(
-			"--pointer-x",
-			`${x}%`,
-		);
+		stageRef.current.style.setProperty("--pointer-x", `${x}%`);
+		stageRef.current.style.setProperty("--pointer-y", `${y}%`);
+		stageRef.current.style.setProperty("--pointer-dx", `${dx}px`);
+		stageRef.current.style.setProperty("--pointer-dy", `${dy}px`);
 
-		stageRef.current.style.setProperty(
-			"--pointer-y",
-			`${y}%`,
-		);
-
-		stageRef.current.style.setProperty(
-			"--pointer-dx",
-			`${dx}px`,
-		);
-
-		stageRef.current.style.setProperty(
-			"--pointer-dy",
-			`${dy}px`,
-		);
+		tiltPointerY.set((x - 50) * -0.03);
+		tiltPointerX.set((y - 50) * 0.025);
 	}
 
 	function handlePointerLeave() {
@@ -394,43 +310,39 @@ export function Hero() {
 			return;
 		}
 
-		stageRef.current.style.setProperty(
-			"--pointer-x",
-			"70%",
-		);
+		stageRef.current.style.setProperty("--pointer-x", "70%");
+		stageRef.current.style.setProperty("--pointer-y", "38%");
+		stageRef.current.style.setProperty("--pointer-dx", "0px");
+		stageRef.current.style.setProperty("--pointer-dy", "0px");
 
-		stageRef.current.style.setProperty(
-			"--pointer-y",
-			"38%",
-		);
-
-		stageRef.current.style.setProperty(
-			"--pointer-dx",
-			"0px",
-		);
-
-		stageRef.current.style.setProperty(
-			"--pointer-dy",
-			"0px",
-		);
+		tiltPointerX.set(0);
+		tiltPointerY.set(0);
 	}
 
 	return (
-		<>
-			<section
-				ref={heroRef}
-				className={styles.hero}
+		<section ref={heroRef} className={styles.hero}>
+			<div
+				ref={stageRef}
+				className={styles.stage}
+				onPointerMove={handlePointerMove}
+				onPointerLeave={handlePointerLeave}
 			>
-				<div
-					ref={stageRef}
-					className={styles.stage}
-					onPointerMove={handlePointerMove}
-					onPointerLeave={handlePointerLeave}
+				<motion.div
+					style={{
+						rotateX: reduceMotion ? 0 : stageTiltX,
+						rotateY: reduceMotion ? 0 : tiltPointerY,
+						transformPerspective: 1400,
+						transformStyle: "preserve-3d",
+						width: "100%",
+						height: "100%",
+					}}
 				>
-					{/* BACKGROUND */}
-
 					<motion.div
 						className={styles.depthLayer}
+						initial="hidden"
+						animate="show"
+						custom={0}
+						variants={fadeIn}
 						style={{
 							x: depthX,
 							y: depthY,
@@ -452,95 +364,50 @@ export function Hero() {
 						aria-hidden="true"
 					/>
 
-					<div
-						className={styles.atmosphere}
-						aria-hidden="true"
-					/>
-
-					<div
-						className={styles.readability}
-						aria-hidden="true"
-					/>
-
-					{/* HEADER */}
-
-					<header className={styles.topbar}>
-						<a
-							href="/"
-							className={styles.name}
-						>
-							Jérémie Garod
-						</a>
-
-						<a
-							href="mailto:contact@jeremiegarod.fr"
-							className={styles.contact}
-						>
-							Me contacter
-
-							<span aria-hidden="true" />
-						</a>
-					</header>
-
-					{/* KICKER */}
+					<div className={styles.atmosphere} aria-hidden="true" />
+					<div className={styles.readability} aria-hidden="true" />
 
 					<motion.div
 						className={styles.kicker}
-						style={{
-							opacity: kickerOpacity,
-						}}
+						initial="hidden"
+						animate="show"
+						custom={0.15}
+						variants={fadeUp}
+						style={{ opacity: kickerOpacity }}
 					>
 						<span />
-
 						Création & refonte de sites web
 					</motion.div>
 
-					{/* TITRE */}
-
 					<motion.div
 						className={styles.statement}
-						style={{
-							x: titleX,
-							y: sceneY,
-							opacity: titleOpacity,
-						}}
+						initial="hidden"
+						animate="show"
+						custom={0.3}
+						variants={fadeUp}
+						style={{ x: titleX, y: sceneY, opacity: titleOpacity }}
 					>
 						<h1>
-							<span className={styles.line}>
-								Je conçois et développe
-							</span>
-
-							<span
-								className={`${styles.line} ${styles.lineTwo}`}
-							>
+							<span className={styles.line}>Je conçois et développe</span>
+							<span className={`${styles.line} ${styles.lineTwo}`}>
 								des sites web{" "}
-								<strong
-									className={
-										styles.inlineAccent
-									}
-								>
-									sur mesure,
-								</strong>
+								<strong className={styles.inlineAccent}>sur mesure,</strong>
 							</span>
-
-							<span
-								className={`${styles.line} ${styles.lineThree}`}
-							>
+							<span className={`${styles.line} ${styles.lineThree}`}>
 								pensés comme de vraies
 							</span>
-
-							<span
-								className={`${styles.line} ${styles.lineAccent}`}
-							>
+							<span className={`${styles.line} ${styles.lineAccent}`}>
 								expériences numériques.
 							</span>
 						</h1>
 					</motion.div>
 
-					{/* VERRE 01 */}
-
 					<motion.div
 						className={`${styles.glassShard} ${styles.shardOne}`}
+						initial="hidden"
+						animate="show"
+						custom={0.45}
+						variants={fadeIn}
 						style={{
 							x: shardOneX,
 							y: sceneY,
@@ -550,22 +417,17 @@ export function Hero() {
 						aria-hidden="true"
 					>
 						<div className={styles.glassSurface}>
-							<div
-								className={
-									styles.glassReflection
-								}
-							/>
-
-							<div
-								className={styles.glassEdge}
-							/>
+							<div className={styles.glassReflection} />
+							<div className={styles.glassEdge} />
 						</div>
 					</motion.div>
 
-					{/* VERRE 02 */}
-
 					<motion.div
 						className={`${styles.glassShard} ${styles.shardTwo}`}
+						initial="hidden"
+						animate="show"
+						custom={0.55}
+						variants={fadeIn}
 						style={{
 							x: shardTwoX,
 							y: sceneY,
@@ -575,22 +437,17 @@ export function Hero() {
 						aria-hidden="true"
 					>
 						<div className={styles.glassSurface}>
-							<div
-								className={
-									styles.glassReflection
-								}
-							/>
-
-							<div
-								className={styles.glassEdge}
-							/>
+							<div className={styles.glassReflection} />
+							<div className={styles.glassEdge} />
 						</div>
 					</motion.div>
 
-					{/* VERRE 03 */}
-
 					<motion.div
 						className={`${styles.glassShard} ${styles.shardThree}`}
+						initial="hidden"
+						animate="show"
+						custom={0.65}
+						variants={fadeIn}
 						style={{
 							x: shardThreeX,
 							y: sceneY,
@@ -600,19 +457,10 @@ export function Hero() {
 						aria-hidden="true"
 					>
 						<div className={styles.glassSurface}>
-							<div
-								className={
-									styles.glassReflection
-								}
-							/>
-
-							<div
-								className={styles.glassEdge}
-							/>
+							<div className={styles.glassReflection} />
+							<div className={styles.glassEdge} />
 						</div>
 					</motion.div>
-
-					{/* VAGUE DE LUMIÈRE */}
 
 					<motion.div
 						className={styles.lightSweep}
@@ -625,8 +473,6 @@ export function Hero() {
 						}}
 						aria-hidden="true"
 					/>
-
-					{/* TRACE ORANGE */}
 
 					<motion.div
 						className={styles.orangeFracture}
@@ -641,123 +487,52 @@ export function Hero() {
 						<span />
 					</motion.div>
 
-					{/* NAVIGATION */}
-
 					<motion.aside
 						className={styles.sideRail}
-						style={{
-							opacity: railOpacity,
-						}}
+						initial="hidden"
+						animate="show"
+						custom={0.75}
+						variants={fadeUp}
+						style={{ opacity: railOpacity }}
 					>
 						<div className={styles.steps}>
-							<span
-								className={styles.active}
-							>
-								01
-							</span>
-
+							<span className={styles.active}>01</span>
 							<span>02</span>
 							<span>03</span>
 							<span>04</span>
 						</div>
 
-						<a
-							href="#projects"
-							className={
-								styles.projectsLink
-							}
-						>
+						<a href="#projects" className={styles.projectsLink}>
 							<span>Vers</span>
 							<span>les projets</span>
 							<i />
 						</a>
 					</motion.aside>
 
-					{/* SCROLL */}
-
 					<motion.div
 						className={styles.scrollHint}
-						style={{
-							opacity: scrollOpacity,
-						}}
+						initial="hidden"
+						animate="show"
+						custom={0.9}
+						variants={fadeUp}
+						style={{ opacity: scrollOpacity }}
 						aria-hidden="true"
 					>
-						<span
-							className={styles.scrollWord}
-						>
-							Scroll
-						</span>
-
-						<span
-							className={styles.scrollLine}
-						/>
-
-						<span className={styles.arrow}>
-							↓
-						</span>
+						<span className={styles.scrollWord}>Scroll</span>
+						<span className={styles.scrollLine} />
+						<span className={styles.arrow}>↓</span>
 					</motion.div>
-
-					{/* SORTIE */}
 
 					<motion.div
 						className={styles.exitWash}
-						style={{
-							opacity: exitWashOpacity,
-						}}
+						style={{ opacity: exitWashOpacity }}
 						aria-hidden="true"
 					/>
 
-					<div
-						className={styles.vignette}
-						aria-hidden="true"
-					/>
-
-					<div
-						className={styles.grain}
-						aria-hidden="true"
-					/>
-				</div>
-			</section>
-
-			{/* PROJETS */}
-
-			<section
-				id="projects"
-				className={styles.projects}
-			>
-				<div className={styles.projectsInner}>
-					<div className={styles.projectsMeta}>
-						<span>01</span>
-
-						<span>
-							Projet sélectionné
-						</span>
-					</div>
-
-					<div
-						className={
-							styles.projectsHeading
-						}
-					>
-						<p>Étude de cas</p>
-
-						<h2>Cabinet Hyde</h2>
-					</div>
-
-					<p
-						className={
-							styles.projectsDescription
-						}
-					>
-						Une expérience web construite
-						autour d’une identité forte,
-						d’une composition sur mesure
-						et d’une navigation pensée
-						comme une véritable mise en
-						scène.
-					</p>
-				</div>
-			</section>
-		</>
+					<div className={styles.vignette} aria-hidden="true" />
+					<div className={styles.grain} aria-hidden="true" />
+				</motion.div>
+			</div>
+		</section>
 	);
 }
