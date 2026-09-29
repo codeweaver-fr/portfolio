@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Instrument_Sans } from "next/font/google";
+import { MotionProvider } from "@/components/motion/MotionProvider";
 import "./globals.scss";
 
 const display = Bricolage_Grotesque({
@@ -25,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className={`${display.variable} ${sans.variable}`}>
-      <body>{children}</body>
+      <body><MotionProvider>{children}</MotionProvider></body>
     </html>
   );
 }

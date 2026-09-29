@@ -1,0 +1,228 @@
+.transition {
+	position: relative;
+	z-index: 50;
+
+	height: 180px;
+
+	margin-top: -90px;
+	margin-bottom: -90px;
+
+	overflow: hidden;
+
+	pointer-events: none;
+
+	isolation: isolate;
+}
+
+/* =========================================================
+   FUSION CENTRALE
+   Hyde -> obscurité -> Internet Sans Piège
+========================================================= */
+
+.base {
+	position: absolute;
+	z-index: 1;
+
+	inset: 0;
+
+	background:
+		linear-gradient(
+			180deg,
+			rgba(8, 4, 5, 0) 0%,
+			rgba(10, 4, 7, 0.28) 16%,
+			rgba(7, 5, 8, 0.68) 34%,
+			rgba(3, 7, 11, 0.9) 48%,
+			rgba(2, 10, 16, 0.82) 61%,
+			rgba(2, 15, 22, 0.4) 78%,
+			rgba(2, 10, 16, 0) 100%
+		);
+}
+
+/* =========================================================
+   DERNIÈRE PRÉSENCE DE CABINET HYDE
+========================================================= */
+
+.hydeGlow {
+	position: absolute;
+	z-index: 2;
+
+	top: -105px;
+	left: -5%;
+
+	width: 72%;
+	height: 220px;
+
+	border-radius: 50%;
+
+	background:
+		radial-gradient(
+			ellipse at center,
+			rgba(111, 16, 34, 0.2) 0%,
+			rgba(69, 8, 22, 0.1) 38%,
+			transparent 72%
+		);
+
+	filter: blur(36px);
+
+	opacity: 0.9;
+}
+
+/* =========================================================
+   NAISSANCE DE L'UNIVERS ISP
+========================================================= */
+
+.internetGlow {
+	position: absolute;
+	z-index: 2;
+
+	right: -8%;
+	bottom: -115px;
+
+	width: 76%;
+	height: 240px;
+
+	border-radius: 50%;
+
+	background:
+		radial-gradient(
+			ellipse at center,
+			rgba(39, 208, 220, 0.2) 0%,
+			rgba(17, 130, 157, 0.09) 36%,
+			transparent 72%
+		);
+
+	filter: blur(42px);
+
+	opacity: 0.9;
+}
+
+/* =========================================================
+   PREMIERS CODES VISUELS D'INTERNET SANS PIÈGE
+========================================================= */
+
+.techGrid {
+	position: absolute;
+	z-index: 3;
+
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+	height: 55%;
+
+	background-image:
+		linear-gradient(
+			rgba(92, 227, 231, 0.06) 1px,
+			transparent 1px
+		),
+		linear-gradient(
+			90deg,
+			rgba(92, 227, 231, 0.06) 1px,
+			transparent 1px
+		);
+
+	background-size:
+		58px 58px;
+
+	opacity: 0.16;
+
+	-webkit-mask-image:
+		linear-gradient(
+			180deg,
+			transparent 0%,
+			rgba(0, 0, 0, 0.15) 22%,
+			black 100%
+		);
+
+	mask-image:
+		linear-gradient(
+			180deg,
+			transparent 0%,
+			rgba(0, 0, 0, 0.15) 22%,
+			black 100%
+		);
+}
+
+/* =========================================================
+   TABLETTE
+========================================================= */
+
+@media (max-width: 1000px) {
+	.transition {
+		height: 150px;
+
+		margin-top: -75px;
+		margin-bottom: -75px;
+	}
+
+	.hydeGlow {
+		top: -95px;
+
+		width: 85%;
+	}
+
+	.internetGlow {
+		bottom: -100px;
+
+		width: 88%;
+	}
+
+	.techGrid {
+		background-size:
+			50px 50px;
+	}
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+	.transition {
+		height: 120px;
+
+		margin-top: -60px;
+		margin-bottom: -60px;
+	}
+
+	.base {
+		background:
+			linear-gradient(
+				180deg,
+				rgba(8, 4, 5, 0) 0%,
+				rgba(8, 5, 8, 0.55) 36%,
+				rgba(3, 8, 12, 0.76) 54%,
+				rgba(2, 13, 19, 0.35) 78%,
+				rgba(2, 10, 16, 0) 100%
+			);
+	}
+
+	.hydeGlow {
+		top: -85px;
+		left: -18%;
+
+		width: 120%;
+		height: 170px;
+
+		opacity: 0.68;
+	}
+
+	.internetGlow {
+		right: -20%;
+		bottom: -90px;
+
+		width: 125%;
+		height: 180px;
+
+		opacity: 0.72;
+	}
+
+	.techGrid {
+		height: 50%;
+
+		background-size:
+			42px 42px;
+
+		opacity: 0.1;
+	}
+}

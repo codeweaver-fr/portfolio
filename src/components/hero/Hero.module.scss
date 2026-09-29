@@ -45,9 +45,6 @@
 
 	inset: -8%;
 
-	background-image:
-		url("/images/hero/hero-depth.webp");
-
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -66,9 +63,6 @@
 	z-index: 5;
 
 	inset: -7%;
-
-	background-image:
-		url("/images/hero/hero-fragments.webp");
 
 	background-position: center;
 	background-repeat: no-repeat;
@@ -253,9 +247,11 @@
 /* =========================================================
    TITRE
 
-   Important :
-   pas de transform CSS ici.
-   Motion contrôle lui-même x / y.
+   Les deux premières phrases remontent ensemble.
+   Le bloc solution reste plus bas.
+
+   Typographie volontairement réduite :
+   le nouveau texte comporte davantage de lignes.
 ========================================================= */
 
 .statement {
@@ -278,23 +274,25 @@
 	backface-visibility: hidden;
 
 	h1 {
+		margin: 0;
+
 		font-family:
 			var(--font-display),
 			sans-serif;
 
 		font-size:
 			clamp(
-				3.55rem,
-				6.55vw,
-				7.5rem
+				3.2rem,
+				5.8vw,
+				6.7rem
 			);
 
 		font-weight: 500;
 
-		line-height: 0.88;
+		line-height: 0.92;
 
 		letter-spacing:
-			-0.07em;
+			-0.065em;
 	}
 }
 
@@ -307,12 +305,30 @@
 	white-space: nowrap;
 }
 
+/* =========================================================
+   CONSTAT
+========================================================= */
+
+.line:first-child,
+.lineTwo {
+	position: relative;
+
+	transform:
+		translateY(-0.68em);
+}
+
 .lineTwo {
 	margin-left: 5vw;
 }
 
+/* =========================================================
+   SOLUTION
+========================================================= */
+
 .lineThree {
 	margin-left: 2vw;
+
+	margin-top: 0.14em;
 }
 
 .inlineAccent {
@@ -331,7 +347,7 @@
 }
 
 .lineAccent {
-	margin-left: 7vw;
+	margin-left: 5vw;
 
 	color: var(--acid);
 }
@@ -1148,15 +1164,27 @@
 		h1 {
 			font-size:
 				clamp(
-					3.2rem,
-					6.9vw,
-					6.3rem
+					2.9rem,
+					6.2vw,
+					5.6rem
 				);
+
+			line-height: 0.94;
 		}
+	}
+
+	.line:first-child,
+	.lineTwo {
+		transform:
+			translateY(-0.55em);
 	}
 
 	.lineTwo {
 		margin-left: 4vw;
+	}
+
+	.lineThree {
+		margin-top: 0.14em;
 	}
 
 	.lineAccent {
@@ -1172,7 +1200,7 @@
 	}
 
 	.sideRail {
-		right: 2vw;
+		display: none;
 	}
 }
 
@@ -1181,12 +1209,20 @@
 ========================================================= */
 
 @media (max-width: 760px) {
+	.depthImage { object-position: 47% center; }
+
 	.hero {
-		min-height: 205vh;
+		min-height: 205svh;
 	}
 
 	.stage {
-		min-height: 620px;
+		height:
+			max(
+				560px,
+				100svh
+			);
+
+		min-height: 0;
 	}
 
 	.depthLayer {
@@ -1220,23 +1256,32 @@
 	}
 
 	.kicker {
-		top: 12.5vh;
+		top:
+			max(
+				88px,
+				13svh
+			);
+
 		left: 20px;
+		right: 20px;
 
 		gap: 10px;
 
-		font-size: 0.54rem;
+		font-size: 0.58rem;
+		line-height: 1.5;
 
 		letter-spacing:
 			0.16em;
 
 		span {
 			width: 23px;
+
+			flex-shrink: 0;
 		}
 	}
 
 	.statement {
-		top: 35%;
+		top: 33%;
 		left: 20px;
 
 		width:
@@ -1247,15 +1292,15 @@
 		h1 {
 			font-size:
 				clamp(
-					2.55rem,
-					11vw,
-					4.1rem
+					1.95rem,
+					9.4vw,
+					3.55rem
 				);
 
-			line-height: 0.92;
+			line-height: 1;
 
 			letter-spacing:
-				-0.062em;
+				-0.055em;
 		}
 	}
 
@@ -1266,14 +1311,24 @@
 		white-space: normal;
 	}
 
+	.line:first-child,
+	.lineTwo {
+		transform:
+			translateY(-0.36em);
+	}
+
 	.lineTwo,
 	.lineThree,
 	.lineAccent {
 		margin-left: 0;
 	}
 
+	.lineThree {
+		margin-top: 0.18em;
+	}
+
 	.lineAccent {
-		margin-top: 0.05em;
+		margin-top: 0.06em;
 	}
 
 	.shardOne {
@@ -1326,8 +1381,24 @@
 	}
 
 	.scrollHint {
-		left: 20px;
-		bottom: 18px;
+		left: auto;
+		right: 20px;
+
+		bottom:
+			max(
+				16px,
+				env(
+					safe-area-inset-bottom
+				)
+			);
+	}
+
+	.scrollWord {
+		display: none;
+	}
+
+	.scrollLine {
+		height: 24px;
 	}
 
 	.grain {
@@ -1336,10 +1407,113 @@
 }
 
 /* =========================================================
+   TRÈS GRAND ÉCRAN
+========================================================= */
+
+@media (min-width: 1800px) {
+	.statement {
+		left:
+			max(
+				5vw,
+				calc(
+					(100vw - 1720px) / 2
+				)
+			);
+
+		width:
+			min(
+				1300px,
+				82vw
+			);
+
+		h1 {
+			font-size:
+				clamp(
+					4.4rem,
+					5.6vw,
+					7rem
+				);
+		}
+	}
+
+	.kicker {
+		left:
+			max(
+				5vw,
+				calc(
+					(100vw - 1720px) / 2
+				)
+			);
+	}
+}
+
+/* =========================================================
+   ÉCRAN PEU HAUT
+========================================================= */
+
+@media (max-height: 600px) and (min-width: 600px) {
+	.stage {
+		height: 100svh;
+		min-height: 0;
+	}
+
+	.kicker {
+		top: 80px;
+
+		font-size: 0.58rem;
+	}
+
+	.statement {
+		top: 38%;
+		left: 5vw;
+
+		width: 88vw;
+	}
+
+	.statement h1 {
+		font-size:
+			clamp(
+				1.3rem,
+				6svh,
+				2.35rem
+			);
+
+		line-height: 1;
+	}
+
+	.line {
+		white-space: nowrap;
+	}
+
+	.line:first-child,
+	.lineTwo {
+		transform:
+			translateY(-0.3em);
+	}
+
+	.lineTwo,
+	.lineThree,
+	.lineAccent {
+		margin-left: 0;
+	}
+
+	.lineThree {
+		margin-top: 0.1em;
+	}
+
+	.sideRail,
+	.scrollHint {
+		display: none;
+	}
+}
+
+/* =========================================================
    REDUCED MOTION
 ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
+	.hero { min-height: 100svh; }
+
 	.depthLayer,
 	.fragmentsLayer,
 	.statement,
@@ -1361,4 +1535,9 @@
 	.projectsLink i {
 		transition: none;
 	}
+}
+
+/* Keep the grain texture, without a continuously moving full-screen layer on touch. */
+@media (pointer: coarse) {
+	.grain { animation: none; will-change: auto; }
 }

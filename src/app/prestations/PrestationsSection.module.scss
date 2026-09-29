@@ -1,0 +1,1901 @@
+.section {
+	position: relative;
+
+	overflow: clip;
+	isolation: isolate;
+
+	background: #050605;
+
+	color: var(--paper);
+}
+
+/* =========================================================
+   DECOR
+========================================================= */
+
+.decor {
+	position: absolute;
+	z-index: 0;
+
+	inset: 0;
+
+	overflow: hidden;
+
+	pointer-events: none;
+}
+
+.background {
+	position: absolute;
+	z-index: 1;
+
+	inset: -4%;
+
+	background-position: center top;
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	filter:
+		brightness(1.12)
+		saturate(1.08)
+		contrast(1.02);
+
+	transform-origin: center;
+
+	will-change: transform;
+}
+
+.backgroundShade {
+	position: absolute;
+	z-index: 2;
+
+	inset: 0;
+
+	background:
+		linear-gradient(
+			180deg,
+			rgba(3, 5, 3, 0.32) 0%,
+			rgba(3, 5, 3, 0.08) 17%,
+			rgba(3, 5, 3, 0.02) 43%,
+			rgba(3, 5, 3, 0.06) 72%,
+			rgba(3, 5, 3, 0.34) 100%
+		),
+		linear-gradient(
+			90deg,
+			rgba(0, 0, 0, 0.12) 0%,
+			transparent 26%,
+			transparent 74%,
+			rgba(0, 0, 0, 0.14) 100%
+		);
+}
+
+/* =========================================================
+   CRYSTALS
+========================================================= */
+
+.depthLeft {
+	position: absolute;
+	z-index: 3;
+
+	top: -2%;
+	left: -36%;
+
+	width: 72%;
+	height: 104%;
+
+	background-position: left center;
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	opacity: 0.38;
+
+	mix-blend-mode: screen;
+
+	filter:
+		saturate(1)
+		brightness(0.95);
+
+	-webkit-mask-image:
+		linear-gradient(
+			90deg,
+			#000 0%,
+			#000 36%,
+			rgba(0, 0, 0, 0.65) 52%,
+			rgba(0, 0, 0, 0.16) 73%,
+			transparent 92%
+		);
+
+	mask-image:
+		linear-gradient(
+			90deg,
+			#000 0%,
+			#000 36%,
+			rgba(0, 0, 0, 0.65) 52%,
+			rgba(0, 0, 0, 0.16) 73%,
+			transparent 92%
+		);
+
+	will-change: transform;
+}
+
+.depthRight {
+	position: absolute;
+	z-index: 3;
+
+	right: -36%;
+	bottom: -2%;
+
+	width: 72%;
+	height: 104%;
+
+	background-position: right center;
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	opacity: 0.4;
+
+	mix-blend-mode: screen;
+
+	filter:
+		saturate(1)
+		brightness(0.98);
+
+	-webkit-mask-image:
+		linear-gradient(
+			270deg,
+			#000 0%,
+			#000 36%,
+			rgba(0, 0, 0, 0.65) 52%,
+			rgba(0, 0, 0, 0.16) 73%,
+			transparent 92%
+		);
+
+	mask-image:
+		linear-gradient(
+			270deg,
+			#000 0%,
+			#000 36%,
+			rgba(0, 0, 0, 0.65) 52%,
+			rgba(0, 0, 0, 0.16) 73%,
+			transparent 92%
+		);
+
+	will-change: transform;
+}
+
+/* =========================================================
+   LIGHT
+========================================================= */
+
+.halo {
+	position: absolute;
+	z-index: 4;
+
+	top: -3%;
+	left: 18%;
+
+	width: 65vw;
+	height: 55vw;
+
+	border-radius: 50%;
+
+	background:
+		radial-gradient(
+			ellipse,
+			rgba(185, 214, 65, 0.08),
+			rgba(185, 214, 65, 0.025) 34%,
+			transparent 70%
+		);
+
+	filter: blur(36px);
+}
+
+.vignette {
+	position: absolute;
+	z-index: 5;
+
+	inset: 0;
+
+	background:
+		radial-gradient(
+			ellipse at 50% 28%,
+			transparent 48%,
+			rgba(0, 0, 0, 0.04) 68%,
+			rgba(0, 0, 0, 0.2) 100%
+		);
+}
+
+/* =========================================================
+   INNER
+========================================================= */
+
+.inner {
+	position: relative;
+	z-index: 10;
+
+	width:
+		min(
+			1510px,
+			calc(100% - 10vw)
+		);
+
+	margin: 0 auto;
+
+	padding:
+		clamp(120px, 8vw, 165px)
+		0
+		clamp(110px, 9vw, 165px);
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+	display: grid;
+
+	grid-template-columns:
+		minmax(0, 1.5fr)
+		minmax(280px, 0.58fr);
+
+	align-items: center;
+
+	gap:
+		clamp(
+			80px,
+			10vw,
+			175px
+		);
+
+	min-height:
+		clamp(
+			540px,
+			62vh,
+			720px
+		);
+
+	margin-bottom:
+		clamp(
+			65px,
+			6vw,
+			95px
+		);
+}
+
+.heroTitle {
+	min-width: 0;
+}
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+.eyebrow {
+	display: flex;
+
+	align-items: center;
+
+	gap: 12px;
+
+	margin-bottom:
+		clamp(
+			30px,
+			3vw,
+			44px
+		);
+
+	color:
+		rgba(
+			241,
+			238,
+			230,
+			0.64
+		);
+
+	font-size:
+		clamp(
+			0.6rem,
+			0.67vw,
+			0.75rem
+		);
+
+	font-weight: 600;
+
+	letter-spacing: 0.22em;
+
+	text-transform: uppercase;
+}
+
+.eyebrow > span {
+	width: 42px;
+	height: 1px;
+
+	background: var(--acid);
+}
+
+.eyebrow > i {
+	display: block;
+
+	width: 20px;
+	height: 1px;
+
+	background: var(--acid);
+
+	font-style: normal;
+}
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.hero h2 {
+	margin: 0;
+
+	max-width: 1050px;
+
+	font-family:
+		var(--font-display),
+		sans-serif;
+
+	font-size:
+		clamp(
+			4rem,
+			5.6vw,
+			6.9rem
+		);
+
+	font-weight: 500;
+
+	line-height: 0.88;
+
+	letter-spacing: -0.065em;
+}
+
+.hero h2 > span,
+.hero h2 > strong {
+	display: block;
+}
+
+.hero h2 > span {
+	color: var(--paper);
+}
+
+.hero h2 > strong {
+	margin-top: 0.05em;
+
+	color: var(--acid);
+
+	font-family:
+		var(--font-display),
+		sans-serif;
+
+	font-size: 1.09em;
+
+	font-weight: 450;
+
+	font-style: italic;
+
+	line-height: 0.92;
+
+	letter-spacing: -0.075em;
+}
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.intro {
+	display: grid;
+
+	grid-template-columns:
+		45px
+		1fr;
+
+	align-items: start;
+
+	gap: 22px;
+}
+
+.introLine {
+	width: 45px;
+	height: 1px;
+
+	margin-top: 0.7em;
+
+	background:
+		rgba(
+			241,
+			238,
+			230,
+			0.5
+		);
+}
+
+.intro p {
+	margin: 0;
+
+	max-width: 390px;
+
+	color:
+		rgba(
+			241,
+			238,
+			230,
+			0.62
+		);
+
+	font-size:
+		clamp(
+			0.92rem,
+			0.98vw,
+			1.05rem
+		);
+
+	line-height: 1.58;
+}
+
+.introLead {
+	margin-bottom: 14px !important;
+
+	color:
+		rgba(
+			241,
+			238,
+			230,
+			0.95
+		) !important;
+
+	font-size:
+		clamp(
+			1rem,
+			1.12vw,
+			1.15rem
+		) !important;
+}
+
+/* =========================================================
+   SERVICES
+========================================================= */
+
+.services {
+	position: relative;
+
+	border-top:
+		1px solid
+		rgba(
+			241,
+			238,
+			230,
+			0.16
+		);
+
+	backdrop-filter: blur(1px);
+}
+
+.service {
+	position: relative;
+
+	overflow: hidden;
+
+	border-bottom:
+		1px solid
+		rgba(
+			241,
+			238,
+			230,
+			0.17
+		);
+
+	transition:
+		background
+		400ms ease;
+}
+
+.serviceOpen {
+	background:
+		linear-gradient(
+			90deg,
+			rgba(185, 214, 65, 0.045),
+			rgba(185, 214, 65, 0.01) 50%,
+			transparent
+		);
+}
+
+/* =========================================================
+   TRIGGER
+========================================================= */
+
+.serviceTrigger {
+	display: grid;
+
+	grid-template-columns:
+		75px
+		minmax(0, auto)
+		minmax(150px, 1fr)
+		auto
+		40px;
+
+	align-items: center;
+
+	gap:
+		clamp(
+			18px,
+			2.3vw,
+			36px
+		);
+
+	width: 100%;
+
+	margin: 0;
+
+	padding:
+		clamp(
+			38px,
+			3.6vw,
+			54px
+		)
+		0;
+
+	border: 0;
+
+	background: transparent;
+
+	color: inherit;
+
+	font: inherit;
+
+	text-align: left;
+
+	cursor: pointer;
+}
+
+/* =========================================================
+   NUMBER
+========================================================= */
+
+.serviceNumber {
+	display: flex;
+
+	align-items: center;
+
+	gap: 18px;
+}
+
+.serviceNumber span {
+	color:
+		rgba(
+			241,
+			238,
+			230,
+			0.46
+		);
+
+	font-family:
+		var(--font-display),
+		sans-serif;
+
+	font-size:
+		clamp(
+			1rem,
+			1.25vw,
+			1.25rem
+		);
+
+	font-weight: 500;
+
+	letter-spacing: -0.025em;
+}
+
+.serviceNumber i {
+	display: block;
+
+	width: 32px;
+	height: 1px;
+
+	background:
+		rgba(
+			241,
+			238,
+			230,
+			0.4
+		);
+}
+
+/* =========================================================
+   SERVICE TITLE
+========================================================= */
+
+.serviceTrigger h3 {
+	margin: 0;
+
+	color: var(--paper);
+
+	font-family:
+		var(--font-display),
+		sans-serif;
+
+	font-size:
+		clamp(
+			2rem,
+			3vw,
+			3.65rem
+		);
+
+	font-weight: 500;
+
+	line-height: 0.96;
+
+	letter-spacing: -0.055em;
+
+	text-transform: uppercase;
+
+	white-space: nowrap;
+
+	transition:
+		color 350ms ease,
+		transform 450ms
+		cubic-bezier(
+			0.16,
+			1,
+			0.3,
+			1
+		);
+}
+
+/* =========================================================
+   PRICE
+========================================================= */
+
+.serviceMeta {
+	display: flex;
+
+	justify-content: flex-end;
+}
+
+.serviceMeta span {
+	color:
+		rgba(
+			241,
+			238,
+			230,
+			0.7
+		);
+
+	font-size:
+		clamp(
+			0.7rem,
+			0.78vw,
+			0.82rem
+		);
+
+	font-weight: 500;
+
+	letter-spacing: 0.02em;
+
+	white-space: nowrap;
+}
+
+.rail {
+	width: 100%;
+	height: 1px;
+
+	min-width: 60px;
+
+	background:
+		linear-gradient(
+			90deg,
+			rgba(
+				241,
+				238,
+				230,
+				0.38
+			),
+			rgba(
+				241,
+				238,
+				230,
+				0.08
+			)
+		);
+}
+
+/* =========================================================
+   TOGGLE
+========================================================= */
+
+.toggle {
+	position: relative;
+
+	display: block;
+
+	width: 28px;
+	height: 28px;
+
+	margin-left: auto;
+
+	transition:
+		transform 500ms
+		cubic-bezier(
+			0.16,
+			1,
+			0.3,
+			1
+		);
+}
+
+.toggle > span {
+	position: absolute;
+
+	top: 50%;
+	left: 50%;
+
+	background: var(--acid);
+
+	transform:
+		translate(
+			-50%,
+			-50%
+		);
+}
+
+.toggle > span:first-child {
+	width: 23px;
+	height: 1px;
+}
+
+.toggle > span:last-child {
+	width: 1px;
+	height: 23px;
+}
+
+.toggleOpen {
+	transform: rotate(45deg);
+}
+
+.serviceOpen
+.serviceTrigger h3 {
+	color: var(--acid);
+}
+
+/* =========================================================
+   REVEAL
+========================================================= */
+
+.reveal {
+	overflow: hidden;
+}
+
+.revealInner {
+	display: grid;
+
+	grid-template-columns:
+		minmax(200px, 0.55fr)
+		minmax(300px, 1fr)
+		minmax(200px, 0.45fr);
+
+	gap:
+		clamp(
+			45px,
+			6vw,
+			100px
+		);
+
+	padding:
+		5px
+		0
+		clamp(
+			50px,
+			5vw,
+			72px
+		)
+		94px;
+}
+
+/* =========================================================
+   REVEAL PROBLEM
+========================================================= */
+
+.revealProblem > span,
+.revealPrice > span {
+	display: block;
+
+	margin-bottom: 15px;
+
+	color:
+		rgba(
+			241,
+			238,
+			230,
+			0.4
+		);
+
+	font-size: 0.58rem;
+
+	font-weight: 600;
+
+	letter-spacing: 0.18em;
+
+	text-transform: uppercase;
+}
+
+.revealProblem p {
+	margin: 0;
+
+	color:
+		rgba(
+			241,
+			238,
+			230,
+			0.94
+		);
+
+	font-family:
+		var(--font-display),
+		sans-serif;
+
+	font-size:
+		clamp(
+			1.3rem,
+			1.7vw,
+			1.85rem
+		);
+
+	line-height: 1.2;
+
+	letter-spacing: -0.04em;
+}
+
+/* =========================================================
+   REVEAL BODY
+========================================================= */
+
+.revealBody > p {
+	margin:
+		0
+		0
+		28px;
+
+	max-width: 620px;
+
+	color:
+		rgba(
+			241,
+			238,
+			230,
+			0.7
+		);
+
+	font-size:
+		clamp(
+			0.94rem,
+			1vw,
+			1.07rem
+		);
+
+	line-height: 1.65;
+}
+
+/* =========================================================
+   TAGS
+========================================================= */
+
+.revealBody ul {
+	display: flex;
+
+	flex-wrap: wrap;
+
+	align-items: flex-start;
+
+	gap:
+		10px
+		9px;
+
+	margin: 0;
+	padding: 0;
+
+	list-style: none;
+}
+
+.revealBody li {
+	position: relative;
+
+	display: inline-flex;
+
+	align-items: center;
+	justify-content: center;
+
+	width: fit-content;
+
+	padding:
+		8px
+		13px;
+
+	border:
+		1px solid
+		rgba(
+			185,
+			214,
+			65,
+			0.98
+		);
+
+	border-radius: 999px;
+
+	background:
+		var(--acid);
+
+	color:
+		var(--ink);
+
+	font-size:
+		clamp(
+			0.59rem,
+			0.65vw,
+			0.7rem
+		);
+
+	font-weight: 700;
+
+	line-height: 1;
+
+	letter-spacing: 0.055em;
+
+	text-transform: uppercase;
+
+	white-space: nowrap;
+
+	box-shadow:
+		0 0 0 1px
+		rgba(
+			185,
+			214,
+			65,
+			0.06
+		),
+		0 5px 16px
+		rgba(
+			0,
+			0,
+			0,
+			0.16
+		);
+
+	transition:
+		transform 260ms
+		cubic-bezier(
+			0.16,
+			1,
+			0.3,
+			1
+		),
+		background 260ms ease,
+		border-color 260ms ease,
+		box-shadow 260ms ease;
+}
+
+.revealBody li > span {
+	display: none;
+}
+
+/* =========================================================
+   REVEAL PRICE
+========================================================= */
+
+.revealPrice {
+	padding-left: 22px;
+
+	border-left:
+		1px solid
+		rgba(
+			185,
+			214,
+			65,
+			0.55
+		);
+}
+
+.revealPrice strong {
+	display: block;
+
+	margin-bottom: 15px;
+
+	color: var(--acid);
+
+	font-family:
+		var(--font-display),
+		sans-serif;
+
+	font-size:
+		clamp(
+			1.55rem,
+			1.9vw,
+			2.3rem
+		);
+
+	font-weight: 500;
+
+	line-height: 1;
+
+	letter-spacing: -0.045em;
+}
+
+.revealPrice p {
+	margin: 0;
+
+	max-width: 210px;
+
+	color:
+		rgba(
+			241,
+			238,
+			230,
+			0.42
+		);
+
+	font-size: 0.7rem;
+
+	line-height: 1.5;
+}
+
+/* =========================================================
+   INTERVENTIONS
+========================================================= */
+
+.interventions {
+	display: grid;
+
+	grid-template-columns:
+		minmax(300px, 0.72fr)
+		minmax(0, 1.35fr);
+
+	gap:
+		clamp(
+			75px,
+			10vw,
+			165px
+		);
+
+	/*
+	 * Réduit volontairement :
+	 * on rapproche la tarification du bloc 04.
+	 */
+	margin-top:
+		clamp(
+			50px,
+			4.5vw,
+			75px
+		);
+
+	padding-top:
+		clamp(
+			38px,
+			3.5vw,
+			55px
+		);
+
+	border-top:
+		1px solid
+		rgba(
+			241,
+			238,
+			230,
+			0.16
+		);
+}
+
+/* =========================================================
+   INTERVENTION TITLE
+========================================================= */
+
+.interventionTitle > span {
+	display: block;
+
+	margin-bottom: 27px;
+
+	color:
+		rgba(
+			241,
+			238,
+			230,
+			0.46
+		);
+
+	font-size: 0.6rem;
+
+	font-weight: 600;
+
+	letter-spacing: 0.18em;
+
+	text-transform: uppercase;
+}
+
+.interventionTitle h3 {
+	margin:
+		0
+		0
+		30px;
+
+	font-family:
+		var(--font-display),
+		sans-serif;
+
+	font-size:
+		clamp(
+			3rem,
+			4.5vw,
+			5.3rem
+		);
+
+	font-weight: 500;
+
+	line-height: 0.9;
+
+	letter-spacing: -0.06em;
+}
+
+.interventionTitle h3 strong {
+	color: var(--acid);
+
+	font-weight: inherit;
+}
+
+.interventionTitle p {
+	margin: 0;
+
+	max-width: 430px;
+
+	color:
+		rgba(
+			241,
+			238,
+			230,
+			0.5
+		);
+
+	font-size:
+		clamp(
+			0.88rem,
+			0.95vw,
+			1rem
+		);
+
+	line-height: 1.6;
+}
+
+/* =========================================================
+   RATE ROWS
+========================================================= */
+
+.interventionRates {
+	border-top:
+		1px solid
+		rgba(
+			241,
+			238,
+			230,
+			0.13
+		);
+}
+
+.interventionRates article {
+	display: grid;
+
+	grid-template-columns:
+		minmax(140px, 0.42fr)
+		minmax(200px, 0.6fr)
+		minmax(160px, 0.5fr);
+
+	align-items: center;
+
+	gap: 30px;
+
+	min-height: 130px;
+
+	padding:
+		25px
+		0;
+
+	border-bottom:
+		1px solid
+		rgba(
+			241,
+			238,
+			230,
+			0.13
+		);
+}
+
+.interventionRates article > span {
+	color:
+		rgba(
+			241,
+			238,
+			230,
+			0.48
+		);
+
+	font-size: 0.62rem;
+
+	font-weight: 600;
+
+	letter-spacing: 0.16em;
+
+	text-transform: uppercase;
+}
+
+.interventionRates article > div {
+	display: flex;
+
+	align-items: baseline;
+
+	gap: 9px;
+}
+
+.interventionRates strong {
+	color: var(--paper);
+
+	font-family:
+		var(--font-display),
+		sans-serif;
+
+	font-size:
+		clamp(
+			2.3rem,
+			3.3vw,
+			4rem
+		);
+
+	font-weight: 500;
+
+	line-height: 0.92;
+
+	letter-spacing: -0.055em;
+}
+
+.interventionRates small {
+	color: var(--acid);
+
+	font-size: 0.75rem;
+
+	font-weight: 600;
+
+	letter-spacing: 0.08em;
+
+	text-transform: uppercase;
+}
+
+.interventionRates article > p {
+	margin: 0;
+
+	color:
+		rgba(
+			241,
+			238,
+			230,
+			0.4
+		);
+
+	font-size:
+		clamp(
+			0.72rem,
+			0.78vw,
+			0.84rem
+		);
+
+	line-height: 1.5;
+}
+
+/* =========================================================
+   FINAL
+========================================================= */
+
+.finalStatement {
+	display: grid;
+
+	grid-template-columns:
+		52px
+		minmax(0, 1fr);
+
+	align-items: start;
+
+	gap: 28px;
+
+	width:
+		min(
+			850px,
+			72%
+		);
+
+	margin:
+		clamp(
+			85px,
+			8vw,
+			130px
+		)
+		auto
+		0;
+}
+
+.finalStatement > span {
+	width: 52px;
+	height: 2px;
+
+	margin-top: 0.55em;
+
+	background: var(--acid);
+}
+
+.finalStatement p {
+	margin: 0;
+
+	font-family:
+		var(--font-display),
+		sans-serif;
+
+	font-size:
+		clamp(
+			2rem,
+			3vw,
+			3.6rem
+		);
+
+	line-height: 1.04;
+
+	letter-spacing: -0.055em;
+}
+
+.finalStatement strong,
+.finalStatement em {
+	display: block;
+}
+
+.finalStatement strong {
+	color: var(--paper);
+
+	font-weight: 500;
+}
+
+.finalStatement em {
+	color:
+		rgba(
+			241,
+			238,
+			230,
+			0.47
+		);
+
+	font-weight: 450;
+
+	font-style: normal;
+}
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+	.serviceTrigger:hover h3 {
+		color: var(--acid);
+
+		transform:
+			translateX(5px);
+	}
+
+	.revealBody li:hover {
+		transform:
+			translateY(-2px);
+
+		background:
+			#c7e84a;
+
+		border-color:
+			#c7e84a;
+
+		box-shadow:
+			0 8px 22px
+			rgba(
+				185,
+				214,
+				65,
+				0.18
+			);
+	}
+
+	.interventionRates article {
+		transition:
+			padding 350ms
+			cubic-bezier(
+				0.16,
+				1,
+				0.3,
+				1
+			);
+	}
+
+	.interventionRates article:hover {
+		padding-left: 8px;
+		padding-right: 8px;
+	}
+
+	.interventionRates strong {
+		transition:
+			color 300ms ease;
+	}
+
+	.interventionRates article:hover strong {
+		color: var(--acid);
+	}
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+	.inner {
+		width:
+			calc(
+				100% - 64px
+			);
+	}
+
+	.hero {
+		grid-template-columns: 1fr;
+
+		gap: 48px;
+
+		min-height: 680px;
+	}
+
+	.intro {
+		max-width: 570px;
+
+		margin-left: auto;
+	}
+
+	.hero h2 {
+		font-size:
+			clamp(
+				3.8rem,
+				8vw,
+				6.3rem
+			);
+	}
+
+	.serviceTrigger {
+		grid-template-columns:
+			62px
+			minmax(0, 1fr)
+			auto
+			70px
+			32px;
+
+		gap: 22px;
+	}
+
+	.serviceTrigger h3 {
+		font-size:
+			clamp(
+				1.9rem,
+				4vw,
+				3.2rem
+			);
+
+		white-space: normal;
+	}
+
+	.revealInner {
+		grid-template-columns:
+			minmax(180px, 0.45fr)
+			minmax(0, 1fr);
+
+		padding-left: 78px;
+	}
+
+	.revealPrice {
+		grid-column: 2;
+	}
+
+	.interventions {
+		grid-template-columns: 1fr;
+
+		gap: 55px;
+
+		margin-top: 55px;
+
+		padding-top: 42px;
+	}
+
+	.depthLeft {
+		left: -52%;
+
+		width: 115%;
+	}
+
+	.depthRight {
+		right: -52%;
+
+		width: 115%;
+	}
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+	.inner {
+		width:
+			calc(
+				100% - 40px
+			);
+
+		padding:
+			100px
+			0
+			100px;
+	}
+
+	.hero {
+		min-height: 610px;
+
+		gap: 38px;
+
+		margin-bottom: 55px;
+	}
+
+	.eyebrow {
+		font-size: 0.54rem;
+
+		letter-spacing: 0.17em;
+	}
+
+	.eyebrow > span {
+		width: 25px;
+	}
+
+	.eyebrow > i {
+		width: 14px;
+	}
+
+	.hero h2 {
+		font-size:
+			clamp(
+				2.9rem,
+				12.8vw,
+				4.5rem
+			);
+
+		line-height: 0.91;
+	}
+
+	.hero h2 > strong {
+		font-size: 1.04em;
+
+		line-height: 0.94;
+	}
+
+	.intro {
+		grid-template-columns:
+			27px
+			1fr;
+
+		gap: 15px;
+
+		margin-left: 0;
+	}
+
+	.introLine {
+		width: 27px;
+	}
+
+	.serviceTrigger {
+		grid-template-columns:
+			29px
+			minmax(0, 1fr)
+			27px;
+
+		gap:
+			9px
+			13px;
+
+		padding:
+			31px
+			0;
+	}
+
+	.serviceNumber {
+		grid-column: 1;
+		grid-row: 1;
+
+		align-self: start;
+	}
+
+	.serviceNumber span {
+		font-size: 0.72rem;
+	}
+
+	.serviceNumber i {
+		display: none;
+	}
+
+	.serviceTrigger h3 {
+		grid-column: 2;
+		grid-row: 1;
+
+		font-size:
+			clamp(
+				1.55rem,
+				6.5vw,
+				2.25rem
+			);
+
+		line-height: 0.98;
+	}
+
+	.serviceMeta {
+		grid-column: 2;
+		grid-row: 2;
+
+		justify-content: flex-start;
+	}
+
+	.serviceMeta span {
+		color:
+			rgba(
+				185,
+				214,
+				65,
+				0.72
+			);
+
+		font-size: 0.61rem;
+	}
+
+	.rail {
+		display: none;
+	}
+
+	.toggle {
+		grid-column: 3;
+		grid-row: 1;
+
+		width: 23px;
+		height: 23px;
+	}
+
+	.toggle > span:first-child {
+		width: 18px;
+	}
+
+	.toggle > span:last-child {
+		height: 18px;
+	}
+
+	.revealInner {
+		display: flex;
+
+		flex-direction: column;
+
+		gap: 31px;
+
+		padding:
+			4px
+			0
+			43px
+			42px;
+	}
+
+	.revealBody ul {
+		gap: 8px;
+	}
+
+	.revealBody li {
+		padding:
+			7px
+			11px;
+
+		font-size: 0.56rem;
+
+		letter-spacing: 0.045em;
+	}
+
+	.revealPrice {
+		padding-left: 18px;
+	}
+
+	/*
+	 * On garde une séparation,
+	 * mais plus le grand trou visible auparavant.
+	 */
+	.interventions {
+		margin-top: 45px;
+
+		padding-top: 38px;
+	}
+
+	.interventionTitle h3 {
+		font-size:
+			clamp(
+				2.7rem,
+				11vw,
+				4rem
+			);
+	}
+
+	.interventionRates article {
+		grid-template-columns:
+			1fr
+			auto;
+
+		gap:
+			12px
+			20px;
+
+		min-height: 0;
+
+		padding:
+			25px
+			0;
+	}
+
+	.interventionRates article > span {
+		grid-column: 1;
+	}
+
+	.interventionRates article > div {
+		grid-column: 2;
+		grid-row:
+			1 / span 2;
+
+		align-self: center;
+
+		justify-self: end;
+
+		text-align: right;
+	}
+
+	.interventionRates article > p {
+		grid-column: 1;
+	}
+
+	.interventionRates strong {
+		font-size:
+			clamp(
+				1.8rem,
+				7.5vw,
+				2.6rem
+			);
+	}
+
+	.finalStatement {
+		grid-template-columns:
+			29px
+			1fr;
+
+		gap: 17px;
+
+		width: 100%;
+
+		margin-top: 75px;
+	}
+
+	.finalStatement > span {
+		width: 29px;
+	}
+
+	.finalStatement p {
+		font-size:
+			clamp(
+				1.75rem,
+				7.5vw,
+				2.6rem
+			);
+	}
+
+	.depthLeft {
+		left: -118%;
+
+		width: 195%;
+
+		opacity: 0.22;
+	}
+
+	.depthRight {
+		right: -118%;
+
+		width: 195%;
+
+		opacity: 0.23;
+	}
+
+	.background {
+		filter:
+			brightness(1.08)
+			saturate(1.04);
+	}
+
+	.backgroundShade {
+		background:
+			linear-gradient(
+				180deg,
+				rgba(3, 5, 3, 0.24),
+				rgba(3, 5, 3, 0.04) 30%,
+				rgba(3, 5, 3, 0.08) 72%,
+				rgba(3, 5, 3, 0.32)
+			);
+	}
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 430px) {
+	.inner {
+		width:
+			calc(
+				100% - 32px
+			);
+	}
+
+	.hero h2 {
+		font-size:
+			clamp(
+				2.65rem,
+				12vw,
+				3.8rem
+			);
+	}
+
+	.revealBody li {
+		white-space: normal;
+
+		text-align: center;
+	}
+}
+
+/* =========================================================
+   LARGE SCREEN
+========================================================= */
+
+@media (min-width: 1800px) {
+	.inner {
+		width:
+			min(
+				1600px,
+				calc(
+					100% - 12vw
+				)
+			);
+	}
+
+	.hero h2 {
+		font-size:
+			clamp(
+				5.8rem,
+				5.5vw,
+				7.6rem
+			);
+	}
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+	.background,
+	.depthLeft,
+	.depthRight {
+		will-change: auto;
+	}
+
+	.service,
+	.serviceTrigger h3,
+	.toggle,
+	.revealBody li,
+	.interventionRates article,
+	.interventionRates strong {
+		transition: none;
+	}
+}

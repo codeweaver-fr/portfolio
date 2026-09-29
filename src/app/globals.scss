@@ -48,3 +48,28 @@ select {
 	background: var(--acid);
 	color: var(--ink);
 }
+/* Ajustements responsive : contenu, hauteur utile et interactions. */
+
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 88px; }
+:where(a, button):focus-visible { outline: 2px solid var(--acid); outline-offset: 5px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Keep offscreen scenes in place for anchors and sticky layouts, but stop their work. */
+[data-motion-paused="true"],
+[data-motion-paused="true"] *,
+[data-motion-paused="true"] *::before,
+[data-motion-paused="true"] *::after {
+	animation-play-state: paused !important;
+	will-change: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	[data-motion-scene],
+	[data-motion-scene] *,
+	[data-motion-scene] *::before,
+	[data-motion-scene] *::after {
+		animation: none !important;
+		transition-duration: 0s !important;
+		will-change: auto !important;
+	}
+}

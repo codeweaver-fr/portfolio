@@ -1,39 +1,86 @@
 "use client";
 
 import Image from "next/image";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m as motion } from "motion/react";
 import { useEffect, useState } from "react";
 
 import styles from "./PortfolioNav.module.scss";
 
+/* =========================================================
+   NAVIGATION PRINCIPALE
+========================================================= */
+
 const mainLinks = [
-	{ index: "01", label: "Accueil", href: "#top" },
-	{ index: "02", label: "Projets", href: "#projects" },
-	{ index: "03", label: "Prestations", href: "#prestations" },
-	{ index: "04", label: "À propos", href: "#about" },
-	{ index: "05", label: "Contact", href: "#contact" },
+ { index: "01", label: "Accueil", href: "/" },
+ { index: "02", label: "Projets", href: "/#projects" },
+ { index: "03", label: "Prestations", href: "/prestations" },
+ { index: "04", label: "À propos", href: undefined },
+ { index: "05", label: "Contact", href: "/#contact" },
 ];
+
+/* =========================================================
+   PROJETS
+========================================================= */
 
 const projectLinks = [
 	{
 		index: "01",
 		label: "Cabinet Hyde",
-		href: "#projects",
+		href: "/#projects",
 	},
 	{
 		index: "02",
 		label: "Internet sans piège",
-		href: "#internet-sans-piege",
+		href: "/#internet-sans-piege",
 	},
 ];
 
-export function PortfolioNav() {
+/* =========================================================
+   SECTIONS SUIVIES PAR LA NAVBAR
+
+   Les sections qui n'existent pas encore sont simplement
+   ignorées jusqu'à leur création.
+========================================================= */
+
+const trackedSections = [
+	{
+		selector: "#projects",
+		label: "01 — Cabinet Hyde",
+	},
+	{
+		selector: "#internet-sans-piege",
+		label: "02 — Internet Sans Piège",
+	},
+	{
+		selector: "#approach",
+		label: "03 — Approche",
+	},
+	{
+		selector: "#prestations",
+		label: "04 — Prestations",
+	},
+	{
+		selector: "#technologies",
+		label: "05 — Technologies",
+	},
+	{
+		selector: "#about",
+		label: "06 — À propos",
+	},
+	{
+		selector: "#contact",
+		label: "07 — Contact",
+	},
+];
+
+export function PortfolioNav({ pageLabel }: { pageLabel?: string } = {}) {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [scrolled, setScrolled] = useState(false);
-	const [currentSection, setCurrentSection] = useState("Portfolio");
+	const [currentSection, setCurrentSection] =
+		useState("Accueil");
 
 	/* =====================================================
-	   SCROLL NAVBAR
+	   NAVBAR AU SCROLL
 	===================================================== */
 
 	useEffect(() => {
@@ -48,111 +95,175 @@ export function PortfolioNav() {
 		});
 
 		return () => {
-			window.removeEventListener("scroll", handleScroll);
+			window.removeEventListener(
+				"scroll",
+				handleScroll,
+			);
 		};
 	}, []);
 
 	/* =====================================================
-	   SECTION COURANTE
+	   SECTION ACTIVE
+
+	   Plusieurs sections peuvent se chevaucher visuellement.
+	   On choisit donc la section qui vient de franchir
+	   le plus récemment le point de lecture.
 	===================================================== */
 
 	useEffect(() => {
-		const sections = [
-			{
-				element: document.querySelector("#projects"),
-				label: "01 — Cabinet Hyde",
-			},
-			{
-				element: document.querySelector("#internet-sans-piege"),
-				label: "02 — Internet sans piège",
-			},
-			{
-				element: document.querySelector("#prestations"),
-				label: "Prestations",
-			},
-			{
-				element: document.querySelector("#about"),
-				label: "À propos",
-			},
-			{
-				element: document.querySelector("#contact"),
-				label: "Contact",
-			},
-		].filter(
-			(
-				item,
-			): item is {
-				element: Element;
-				label: string;
-			} => Boolean(item.element),
-		);
+		if (pageLabel) return;
+		let frame = 0;
+		const sections = trackedSections.map(item => ({
+			...item,
+			element: document.querySelector<HTMLElement>(item.selector),
+		}));
 
 		const updateCurrentSection = () => {
-			const y = window.scrollY + window.innerHeight * 0.36;
+			if (frame) return;
 
-			let label = "Accueil";
+			frame = requestAnimationFrame(() => {
+				frame = 0;
+				const marker =
+					window.innerHeight * 0.35;
 
-			for (const section of sections) {
-				const element = section.element as HTMLElement;
+				let activeLabel = "Accueil";
+				let closestDistance =
+					Number.POSITIVE_INFINITY;
 
-				if (element.offsetTop <= y) {
-					label = section.label;
+				for (const item of sections) {
+					const element = item.element;
+
+					if (!element) {
+						continue;
+					}
+
+					const rect =
+						element.getBoundingClientRect();
+
+					/*
+					 * La section n'a pas encore atteint
+					 * le point de lecture.
+					 */
+					if (rect.top > marker) {
+						continue;
+					}
+
+					const distance =
+						marker - rect.top;
+
+					/*
+					 * On prend le début de section
+					 * le plus proche du marqueur.
+					 *
+					 * Cela évite qu'ISP reste actif
+					 * alors qu'Approche est déjà visible.
+					 */
+					if (
+						distance <
+						closestDistance
+					) {
+						closestDistance =
+							distance;
+
+						activeLabel =
+							item.label;
+					}
 				}
-			}
 
-			setCurrentSection(label);
+				setCurrentSection(
+					(previous) =>
+						previous ===
+						activeLabel
+							? previous
+							: activeLabel,
+				);
+			});
 		};
 
 		updateCurrentSection();
 
-		window.addEventListener("scroll", updateCurrentSection, {
-			passive: true,
-		});
+		window.addEventListener(
+			"scroll",
+			updateCurrentSection,
+			{
+				passive: true,
+			},
+		);
 
-		window.addEventListener("resize", updateCurrentSection);
+		window.addEventListener(
+			"resize",
+			updateCurrentSection,
+		);
 
 		return () => {
-			window.removeEventListener("scroll", updateCurrentSection);
-			window.removeEventListener("resize", updateCurrentSection);
+			cancelAnimationFrame(frame);
+
+			window.removeEventListener(
+				"scroll",
+				updateCurrentSection,
+			);
+
+			window.removeEventListener(
+				"resize",
+				updateCurrentSection,
+			);
 		};
-	}, []);
+	}, [pageLabel]);
 
 	/* =====================================================
-	   FERMETURE ESC + BODY LOCK
+	   ESC + VERROUILLAGE DU SCROLL
 	===================================================== */
 
 	useEffect(() => {
-		document.body.style.overflow = menuOpen ? "hidden" : "";
+		document.body.style.overflow =
+			menuOpen ? "hidden" : "";
 
-		const handleKeyDown = (event: KeyboardEvent) => {
+		const handleKeyDown = (
+			event: KeyboardEvent,
+		) => {
 			if (event.key === "Escape") {
 				setMenuOpen(false);
 			}
 		};
 
-		window.addEventListener("keydown", handleKeyDown);
+		window.addEventListener(
+			"keydown",
+			handleKeyDown,
+		);
 
 		return () => {
-			window.removeEventListener("keydown", handleKeyDown);
-			document.body.style.overflow = "";
+			window.removeEventListener(
+				"keydown",
+				handleKeyDown,
+			);
+
+			document.body.style.overflow =
+				"";
 		};
 	}, [menuOpen]);
 
 	/* =====================================================
-	   FIX MOBILE -> DESKTOP / ROTATION
+	   MOBILE <-> DESKTOP
 	===================================================== */
 
 	useEffect(() => {
-		const mobileMedia = window.matchMedia("(max-width: 700px)");
+		const media =
+			window.matchMedia(
+				"(max-width: 700px)",
+			);
 
-		const handleBreakpointChange = () => {
-			setMenuOpen(false);
-		};
+		const handleBreakpointChange =
+			() => {
+				setMenuOpen(false);
+			};
 
-		mobileMedia.addEventListener("change", handleBreakpointChange);
+		media.addEventListener(
+			"change",
+			handleBreakpointChange,
+		);
 
 		return () => {
-			mobileMedia.removeEventListener(
+			media.removeEventListener(
 				"change",
 				handleBreakpointChange,
 			);
@@ -168,25 +279,46 @@ export function PortfolioNav() {
 			<header
 				className={[
 					styles.nav,
-					scrolled ? styles.navScrolled : "",
-					menuOpen ? styles.navOpen : "",
+					scrolled
+						? styles.navScrolled
+						: "",
+					menuOpen
+						? styles.navOpen
+						: "",
 				]
 					.filter(Boolean)
 					.join(" ")}
 			>
-				<div className={styles.navGlass} aria-hidden="true">
+				{/* =============================================
+				    VERRE NAVBAR
+				============================================= */}
+
+				<div
+					className={styles.navGlass}
+					aria-hidden="true"
+				>
 					<Image
 						src="/images/hero/hero-fragments.webp"
 						alt=""
 						fill
 						sizes="100vw"
-						className={styles.navFragments}
-						priority
+						className={
+							styles.navFragments
+						}
+						loading="eager"
 					/>
 
-					<span className={styles.navSweep} />
+					<span
+						className={
+							styles.navSweep
+						}
+					/>
 
-					<div className={styles.navSparkles}>
+					<div
+						className={
+							styles.navSparkles
+						}
+					>
 						<span />
 						<span />
 						<span />
@@ -194,28 +326,54 @@ export function PortfolioNav() {
 					</div>
 				</div>
 
+				{/* =============================================
+				    CONTENU NAVBAR
+				============================================= */}
+
 				<div className={styles.navInner}>
 					<a
-						href="#top"
+						href="/"
 						className={styles.brand}
 						onClick={closeMenu}
 					>
-						<span className={styles.brandMark} />
-						<span>Jérémie Garod</span>
+						<span
+							className={
+								styles.brandMark
+							}
+						/>
+
+						<span>
+							Jérémie Garod
+						</span>
 					</a>
 
 					<div
-						className={styles.currentSection}
+						className={
+							styles.currentSection
+						}
 						aria-live="polite"
 					>
-						<span className={styles.currentDot} />
-						<span>{currentSection}</span>
+						<span
+							className={
+								styles.currentDot
+							}
+						/>
+
+						<span>
+							{pageLabel ?? currentSection}
+						</span>
 					</div>
 
-					<div className={styles.navActions}>
+					<div
+						className={
+							styles.navActions
+						}
+					>
 						<a
-							href="#contact"
-							className={styles.contactLink}
+							href="/#contact"
+							className={
+								styles.contactLink
+							}
 							onClick={closeMenu}
 						>
 							Me contacter
@@ -223,9 +381,18 @@ export function PortfolioNav() {
 
 						<button
 							type="button"
-							className={styles.menuButton}
-							onClick={() => setMenuOpen((value) => !value)}
-							aria-expanded={menuOpen}
+							className={
+								styles.menuButton
+							}
+							onClick={() =>
+								setMenuOpen(
+									(value) =>
+										!value,
+								)
+							}
+							aria-expanded={
+								menuOpen
+							}
 							aria-controls="portfolio-menu"
 							aria-label={
 								menuOpen
@@ -233,8 +400,14 @@ export function PortfolioNav() {
 									: "Ouvrir le menu"
 							}
 						>
-							<span className={styles.menuLabel}>
-								{menuOpen ? "Fermer" : "Menu"}
+							<span
+								className={
+									styles.menuLabel
+								}
+							>
+								{menuOpen
+									? "Fermer"
+									: "Menu"}
 							</span>
 
 							<span
@@ -244,7 +417,9 @@ export function PortfolioNav() {
 										? styles.menuGlyphOpen
 										: "",
 								]
-									.filter(Boolean)
+									.filter(
+										Boolean,
+									)
 									.join(" ")}
 								aria-hidden="true"
 							>
@@ -256,38 +431,73 @@ export function PortfolioNav() {
 				</div>
 			</header>
 
+			{/* =================================================
+			    MENU
+			================================================= */}
+
 			<AnimatePresence>
 				{menuOpen && (
 					<>
 						<motion.button
 							type="button"
-							className={styles.backdrop}
+							className={
+								styles.backdrop
+							}
 							onClick={closeMenu}
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							exit={{ opacity: 0 }}
-							transition={{ duration: 0.28 }}
+							initial={{
+								opacity: 0,
+							}}
+							animate={{
+								opacity: 1,
+							}}
+							exit={{
+								opacity: 0,
+							}}
+							transition={{
+								duration: 0.28,
+							}}
 							aria-label="Fermer le menu"
 						/>
 
 						<motion.aside
 							id="portfolio-menu"
-							className={styles.menuPanel}
-							initial={{ x: "104%" }}
-							animate={{ x: 0 }}
-							exit={{ x: "104%" }}
+							className={
+								styles.menuPanel
+							}
+							initial={{
+								x: "104%",
+							}}
+							animate={{
+								x: 0,
+							}}
+							exit={{
+								x: "104%",
+							}}
 							transition={{
 								duration: 0.58,
-								ease: [0.22, 1, 0.36, 1],
+								ease: [
+									0.22,
+									1,
+									0.36,
+									1,
+								],
 							}}
 						>
+							{/* =================================
+							    ATMOSPHÈRE
+							================================= */}
+
 							<div
-								className={styles.menuAtmosphere}
+								className={
+									styles.menuAtmosphere
+								}
 								aria-hidden="true"
 							/>
 
 							<div
-								className={styles.menuFragments}
+								className={
+									styles.menuFragments
+								}
 								aria-hidden="true"
 							>
 								<Image
@@ -295,17 +505,23 @@ export function PortfolioNav() {
 									alt=""
 									fill
 									sizes="50vw"
-									className={styles.menuFragmentsImage}
+									className={
+										styles.menuFragmentsImage
+									}
 								/>
 							</div>
 
 							<div
-								className={styles.menuGlassSweep}
+								className={
+									styles.menuGlassSweep
+								}
 								aria-hidden="true"
 							/>
 
 							<div
-								className={styles.menuSparkles}
+								className={
+									styles.menuSparkles
+								}
 								aria-hidden="true"
 							>
 								<span />
@@ -317,126 +533,227 @@ export function PortfolioNav() {
 							</div>
 
 							<div
-								className={styles.glassShardOne}
+								className={
+									styles.glassShardOne
+								}
 								aria-hidden="true"
 							/>
 
 							<div
-								className={styles.glassShardTwo}
+								className={
+									styles.glassShardTwo
+								}
 								aria-hidden="true"
 							/>
 
 							<div
-								className={styles.glassShardThree}
+								className={
+									styles.glassShardThree
+								}
 								aria-hidden="true"
 							/>
 
-							<div className={styles.menuContent}>
-								<div className={styles.menuIntro}>
-									<span>Navigation</span>
-									<p>Explorer le portfolio</p>
+							{/* =================================
+							    CONTENU
+							================================= */}
+
+							<div
+								className={
+									styles.menuContent
+								}
+							>
+								<div
+									className={
+										styles.menuIntro
+									}
+								>
+									<span>
+										Navigation
+									</span>
+
+									<p>
+										Explorer le
+										portfolio
+									</p>
 								</div>
 
 								<nav
-									className={styles.mainNavigation}
+									className={
+										styles.mainNavigation
+									}
 									aria-label="Navigation principale"
 								>
-									{mainLinks.map((link) => (
-										<a
-											key={link.href}
-											href={link.href}
-											className={styles.menuLink}
-											onClick={closeMenu}
-										>
-											<span
-												className={styles.menuTabGlint}
-												aria-hidden="true"
-											/>
-
-											<span
-												className={
-													styles.menuLinkIndex
-												}
-											>
-												{link.index}
-											</span>
-
-											<span
-												className={
-													styles.menuLinkLabel
-												}
-											>
-												{link.label}
-											</span>
-
-											<span
-												className={
-													styles.menuLinkLine
-												}
-												aria-hidden="true"
-											/>
-
-											<span
-												className={
-													styles.menuLinkArrow
-												}
-												aria-hidden="true"
-											>
-												↗
-											</span>
-										</a>
-									))}
-								</nav>
-
-								<div className={styles.menuDivider} />
-
-								<div className={styles.projectsBlock}>
-									<div className={styles.projectsHeading}>
-										<span>Projets sélectionnés</span>
-										<span>02</span>
-									</div>
-
-									<div className={styles.projectLinks}>
-										{projectLinks.map((project) => (
+									{mainLinks.map(
+										(
+											link,
+										) => (
 											<a
-												key={project.href}
-												href={project.href}
-												className={styles.projectLink}
-												onClick={closeMenu}
+												key={link.index}
+ aria-disabled={!link.href || undefined}
+ tabIndex={link.href ? undefined : -1}
+ title={link.href ? undefined : "Page À propos à venir"}
+ aria-current={pageLabel === "Prestations" && link.href === "/prestations" ? "page" : undefined}
+												href={
+													link.href
+												}
+												className={
+													styles.menuLink
+												}
+												onClick={
+													closeMenu
+												}
 											>
 												<span
 													className={
-														styles.projectGlint
+														styles.menuTabGlint
 													}
 													aria-hidden="true"
 												/>
 
-												<span>
-													{project.index}
+												<span
+													className={
+														styles.menuLinkIndex
+													}
+												>
+													{
+														link.index
+													}
 												</span>
 
-												<strong>
-													{project.label}
-												</strong>
+												<span
+													className={
+														styles.menuLinkLabel
+													}
+												>
+													{
+														link.label
+													}
+												</span>
+
+												<span
+													className={
+														styles.menuLinkLine
+													}
+													aria-hidden="true"
+												/>
+
+												<span
+													className={
+														styles.menuLinkArrow
+													}
+													aria-hidden="true"
+												>
+													↗
+												</span>
 											</a>
-										))}
+										),
+									)}
+								</nav>
+
+								<div
+									className={
+										styles.menuDivider
+									}
+								/>
+
+								{/* =================================
+								    PROJETS
+								================================= */}
+
+								<div
+									className={
+										styles.projectsBlock
+									}
+								>
+									<div
+										className={
+											styles.projectsHeading
+										}
+									>
+										<span>
+											Projets
+											sélectionnés
+										</span>
+
+										<span>
+											02
+										</span>
+									</div>
+
+									<div
+										className={
+											styles.projectLinks
+										}
+									>
+										{projectLinks.map(
+											(
+												project,
+											) => (
+												<a
+													key={
+														project.href
+													}
+													href={
+														project.href
+													}
+													className={
+														styles.projectLink
+													}
+													onClick={
+														closeMenu
+													}
+												>
+													<span
+														className={
+															styles.projectGlint
+														}
+														aria-hidden="true"
+													/>
+
+													<span>
+														{
+															project.index
+														}
+													</span>
+
+													<strong>
+														{
+															project.label
+														}
+													</strong>
+												</a>
+											),
+										)}
 									</div>
 								</div>
 
-								<div className={styles.menuFooter}>
-									<span>Jérémie Garod</span>
+								{/* =================================
+								    FOOTER MENU
+								================================= */}
+
+								<div
+									className={
+										styles.menuFooter
+									}
+								>
+									<span>
+										Jérémie Garod
+									</span>
 
 									<span>
-										Développement web sur mesure
+										Développement
+										web sur mesure
 									</span>
 								</div>
 							</div>
 
 							<div
-								className={styles.menuGhostNumber}
+								className={
+									styles.menuGhostNumber
+								}
 								aria-hidden="true"
 							>
-								01
+								07
 							</div>
 						</motion.aside>
 					</>

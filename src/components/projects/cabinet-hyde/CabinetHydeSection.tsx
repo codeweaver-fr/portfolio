@@ -3,13 +3,14 @@
 import Image from "next/image";
 import {
 	AnimatePresence,
-	motion,
+	m as motion,
 	useReducedMotion,
-	useScroll,
 	useSpring,
 	useTransform,
 } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+
+import { useSectionScroll } from "@/hooks/useSectionScroll";
 
 import styles from "./CabinetHydeSection.module.scss";
 
@@ -70,14 +71,10 @@ export function CabinetHydeSection() {
 	}, [viewer]);
 
 	/* =====================================================
-	   SCROLL / PARALLAXE — spring cohérent avec le Hero
-	   (critique : suit le scroll sans traîner)
+	   SCROLL / PARALLAXE
 	===================================================== */
 
-	const { scrollYProgress } = useScroll({
-		target: sectionRef,
-		offset: ["start end", "end start"],
-	});
+	const { scrollYProgress } = useSectionScroll(sectionRef, ["start end", "end start"], noMotion);
 
 	const smoothProgress = useSpring(scrollYProgress, {
 		stiffness: 400,
@@ -89,7 +86,11 @@ export function CabinetHydeSection() {
 	const backgroundY = useTransform(
 		smoothProgress,
 		[0, 1],
-		noMotion ? [0, 0] : compactMotion ? [6, -10] : [22, -36],
+		noMotion
+			? [0, 0]
+			: compactMotion
+			  ? [6, -10]
+			  : [22, -36],
 	);
 
 	const backgroundScale = useTransform(
@@ -98,56 +99,86 @@ export function CabinetHydeSection() {
 		noMotion
 			? [1.015, 1.015]
 			: compactMotion
-				? [1.018, 1.028]
-				: [1.025, 1.05],
+			  ? [1.018, 1.028]
+			  : [1.025, 1.05],
 	);
 
 	const leftDecorY = useTransform(
 		smoothProgress,
 		[0, 1],
-		noMotion ? [0, 0] : compactMotion ? [4, -8] : [18, -22],
+		noMotion
+			? [0, 0]
+			: compactMotion
+			  ? [4, -8]
+			  : [18, -22],
 	);
 
 	const rightDecorY = useTransform(
 		smoothProgress,
 		[0, 1],
-		noMotion ? [0, 0] : compactMotion ? [6, -11] : [30, -34],
+		noMotion
+			? [0, 0]
+			: compactMotion
+			  ? [6, -11]
+			  : [30, -34],
 	);
 
 	const websiteY = useTransform(
 		smoothProgress,
 		[0, 1],
-		noMotion ? [0, 0] : compactMotion ? [5, -10] : [22, -38],
+		noMotion
+			? [0, 0]
+			: compactMotion
+			  ? [5, -10]
+			  : [22, -38],
 	);
 
 	const websiteScale = useTransform(
 		smoothProgress,
 		[0, 1],
-		noMotion ? [1, 1] : compactMotion ? [1, 1.004] : [0.992, 1.012],
+		noMotion
+			? [1, 1]
+			: compactMotion
+			  ? [1, 1.004]
+			  : [0.992, 1.012],
 	);
 
 	const journalY = useTransform(
 		smoothProgress,
 		[0, 1],
-		noMotion ? [0, 0] : compactMotion ? [8, -12] : [38, -54],
+		noMotion
+			? [0, 0]
+			: compactMotion
+			  ? [8, -12]
+			  : [38, -54],
 	);
 
 	const lightX = useTransform(
 		smoothProgress,
 		[0, 1],
-		noMotion ? [0, 0] : compactMotion ? [-4, 8] : [-24, 34],
+		noMotion
+			? [0, 0]
+			: compactMotion
+			  ? [-4, 8]
+			  : [-24, 34],
 	);
 
 	const lightOpacity = useTransform(
 		smoothProgress,
 		[0, 0.5, 1],
-		noMotion ? [0.8, 0.8, 0.8] : [0.58, 1, 0.64],
+		noMotion
+			? [0.8, 0.8, 0.8]
+			: [0.58, 1, 0.64],
 	);
 
 	const sheenX = useTransform(
 		smoothProgress,
 		[0, 1],
-		noMotion ? [0, 0] : compactMotion ? [80, 150] : [90, 420],
+		noMotion
+			? [0, 0]
+			: compactMotion
+			  ? [80, 150]
+			  : [90, 420],
 	);
 
 	const sheenOpacity = useTransform(
@@ -156,24 +187,25 @@ export function CabinetHydeSection() {
 		noMotion
 			? [0, 0, 0, 0]
 			: compactMotion
-				? [0, 0.1, 0.07, 0]
-				: [0, 0.25, 0.16, 0],
+			  ? [0, 0.1, 0.07, 0]
+			  : [0, 0.25, 0.16, 0],
 	);
 
 	/*
 	 * Transition Hero -> Cabinet Hyde :
 	 * noir au début, puis apparition progressive du bordeaux.
 	 */
+
 	const entranceOpacity = useTransform(
 		smoothProgress,
 		[0, 0.18, 0.38],
-		noMotion ? [0, 0, 0] : [1, 0.55, 0],
+		noMotion
+			? [0, 0, 0]
+			: [1, 0.55, 0],
 	);
 
 	/* =====================================================
-	   RÉVÉLATIONS AU SCROLL — uniquement opacity, pour ne
-	   jamais entrer en conflit avec les MotionValues de
-	   parallaxe (y / scale) déjà pilotées par le scroll
+	   RÉVÉLATIONS AU SCROLL
 	===================================================== */
 
 	const revealTransition = (delay = 0) => ({
@@ -186,11 +218,12 @@ export function CabinetHydeSection() {
 		<>
 			<section
 				ref={sectionRef}
+			data-motion-scene
 				id="projects"
 				className={styles.section}
 			>
 				{/* =================================================
-				    01 — TRANSITION HERO -> PROJET
+					01 — TRANSITION HERO -> PROJET
 				================================================= */}
 
 				<motion.div
@@ -200,7 +233,7 @@ export function CabinetHydeSection() {
 				/>
 
 				{/* =================================================
-				    02 — FOND
+					02 — FOND
 				================================================= */}
 
 				<motion.div
@@ -210,7 +243,9 @@ export function CabinetHydeSection() {
 						scale: backgroundScale,
 					}}
 					aria-hidden="true"
-				/>
+				>
+					<Image src="/images/projects/cabinet-hyde/hyde-section-bg.webp" alt="" fill sizes="100vw"  style={{ objectFit: "cover", objectPosition: "center" }} />
+				</motion.div>
 
 				<div
 					className={styles.backgroundShade}
@@ -223,15 +258,22 @@ export function CabinetHydeSection() {
 				/>
 
 				{/* =================================================
-				    03 — DÉCORS
+					03 — DÉCORS
 				================================================= */}
 
 				<motion.div
 					className={styles.decorLeft}
 					style={{ y: leftDecorY }}
-					initial={noMotion ? false : { opacity: 0 }}
+					initial={
+						noMotion
+							? false
+							: { opacity: 0 }
+					}
 					whileInView={{ opacity: 1 }}
-					viewport={{ once: true, amount: 0.15 }}
+					viewport={{
+						once: true,
+						amount: 0.15,
+					}}
 					transition={revealTransition(0.05)}
 					aria-hidden="true"
 				>
@@ -239,7 +281,7 @@ export function CabinetHydeSection() {
 						src="/images/projects/cabinet-hyde/hyde-decor-left.webp"
 						alt=""
 						fill
-						sizes="45vw"
+						sizes="(max-width: 1000px) 100vw, 45vw"
 						className={styles.decorImage}
 					/>
 				</motion.div>
@@ -247,9 +289,16 @@ export function CabinetHydeSection() {
 				<motion.div
 					className={styles.decorRight}
 					style={{ y: rightDecorY }}
-					initial={noMotion ? false : { opacity: 0 }}
+					initial={
+						noMotion
+							? false
+							: { opacity: 0 }
+					}
 					whileInView={{ opacity: 1 }}
-					viewport={{ once: true, amount: 0.15 }}
+					viewport={{
+						once: true,
+						amount: 0.15,
+					}}
 					transition={revealTransition(0.1)}
 					aria-hidden="true"
 				>
@@ -257,32 +306,57 @@ export function CabinetHydeSection() {
 						src="/images/projects/cabinet-hyde/hyde-decor-right.webp"
 						alt=""
 						fill
-						sizes="38vw"
+						sizes="(max-width: 1000px) 100vw, 38vw"
 						className={styles.decorImage}
 					/>
 				</motion.div>
 
 				{/* =================================================
-				    04 — MICRO-INDICATEUR PROJET
+					04 — MICRO-INDICATEUR PROJET
 				================================================= */}
 
 				<motion.div
 					className={styles.projectRail}
-					initial={noMotion ? false : { opacity: 0, x: 8 }}
-					whileInView={{ opacity: 1, x: 0 }}
-					viewport={{ once: true, amount: 0.3 }}
+					initial={
+						noMotion
+							? false
+							: {
+								  opacity: 0,
+								  x: 8,
+							  }
+					}
+					whileInView={{
+						opacity: 1,
+						x: 0,
+					}}
+					viewport={{
+						once: true,
+						amount: 0.3,
+					}}
 					transition={revealTransition(0.2)}
 					aria-hidden="true"
 				>
-					<span className={styles.projectRailCurrent}>01</span>
-					<span className={styles.projectRailSlash}>/</span>
-					<span>02</span>
+					<span className={styles.projectRailCurrent}>
+						01
+					</span>
+
+					<span className={styles.projectRailSlash}>
+						/
+					</span>
+
+					<span>
+						02
+					</span>
+
 					<i />
-					<small>Projets</small>
+
+					<small>
+						Projets
+					</small>
 				</motion.div>
 
 				{/* =================================================
-				    05 — CONTENU
+					05 — CONTENU
 				================================================= */}
 
 				<motion.div
@@ -291,9 +365,9 @@ export function CabinetHydeSection() {
 						noMotion
 							? false
 							: {
-									opacity: 0,
-									y: 24,
-								}
+								  opacity: 0,
+								  y: 24,
+							  }
 					}
 					whileInView={{
 						opacity: 1,
@@ -309,18 +383,31 @@ export function CabinetHydeSection() {
 					}}
 				>
 					<div className={styles.projectIndex}>
-						<span>01</span>
+						<span>
+							01
+						</span>
+
 						<i />
-						<p>Projet sélectionné</p>
+
+						<p>
+							Projet sélectionné
+						</p>
+
 						<b />
 					</div>
 
 					<header className={styles.heading}>
-						<h2>Cabinet Hyde</h2>
+						<h2>
+							Cabinet Hyde
+						</h2>
 
 						<p>
 							Médecins itinérants
-							<span>—</span>
+
+							<span>
+								—
+							</span>
+
 							1904
 						</p>
 					</header>
@@ -339,7 +426,10 @@ export function CabinetHydeSection() {
 						</p>
 					</div>
 
-					<div className={styles.separator} aria-hidden="true">
+					<div
+						className={styles.separator}
+						aria-hidden="true"
+					>
 						<span />
 						<i />
 						<span />
@@ -347,7 +437,9 @@ export function CabinetHydeSection() {
 
 					<div className={styles.meta}>
 						<div>
-							<span>Rôle</span>
+							<span>
+								Rôle
+							</span>
 
 							<p>
 								Direction visuelle
@@ -357,7 +449,9 @@ export function CabinetHydeSection() {
 						</div>
 
 						<div>
-							<span>Stack</span>
+							<span>
+								Stack
+							</span>
 
 							<p>
 								Next.js · TypeScript
@@ -367,7 +461,9 @@ export function CabinetHydeSection() {
 						</div>
 
 						<div>
-							<span>Focus</span>
+							<span>
+								Focus
+							</span>
 
 							<p>
 								Narration immersive
@@ -377,25 +473,63 @@ export function CabinetHydeSection() {
 						</div>
 					</div>
 
-					<a
-						href="https://cabinet-hyde-stock.web.app/"
-						target="_blank"
-						rel="noopener noreferrer"
-						className={styles.cta}
-					>
-						<span className={styles.ctaShine} aria-hidden="true" />
-						<span>Découvrir le site</span>
-						<i aria-hidden="true">↗</i>
-					</a>
+					<div className={styles.ctaGroup}>
+						<a
+							href="https://cabinet-hyde-stock.web.app/"
+							target="_blank"
+							rel="noopener noreferrer"
+							className={styles.cta}
+						>
+							<span
+								className={styles.ctaShine}
+								aria-hidden="true"
+							/>
+
+							<span>
+								Découvrir le site
+							</span>
+
+							<i aria-hidden="true">
+								↗
+							</i>
+						</a>
+
+						<a
+							href="/projets/cabinet-hyde"
+							className={styles.caseStudyLink}
+							aria-label="Voir l’étude de cas Cabinet Hyde"
+						>
+							<span
+								className={styles.caseStudyLine}
+								aria-hidden="true"
+							/>
+
+							<span className={styles.caseStudyLabel}>
+								Voir l’étude de cas
+							</span>
+
+							<span
+								className={styles.caseStudyArrow}
+								aria-hidden="true"
+							>
+								→
+							</span>
+						</a>
+					</div>
 
 					<blockquote className={styles.quote}>
-						<p>« Soigner, comprendre, transmettre. »</p>
-						<footer>— Sélénia</footer>
+						<p>
+							« Soigner, comprendre, transmettre. »
+						</p>
+
+						<footer>
+							— Sélénia
+						</footer>
 					</blockquote>
 				</motion.div>
 
 				{/* =================================================
-				    06 — SITE ENCADRÉ
+					06 — SITE ENCADRÉ
 				================================================= */}
 
 				<motion.button
@@ -405,11 +539,22 @@ export function CabinetHydeSection() {
 						y: websiteY,
 						scale: websiteScale,
 					}}
-					initial={noMotion ? false : { opacity: 0 }}
-					whileInView={{ opacity: 1 }}
-					viewport={{ once: true, amount: 0.15 }}
+					initial={
+						noMotion
+							? false
+							: { opacity: 0 }
+					}
+					whileInView={{
+						opacity: 1,
+					}}
+					viewport={{
+						once: true,
+						amount: 0.15,
+					}}
 					transition={revealTransition(0.15)}
-					onClick={() => setViewer("website")}
+					onClick={() =>
+						setViewer("website")
+					}
 					aria-label="Agrandir la page d’accueil de Cabinet Hyde"
 				>
 					<div className={styles.websiteViewport}>
@@ -446,21 +591,34 @@ export function CabinetHydeSection() {
 				</motion.button>
 
 				{/* =================================================
-				    07 — JOURNAL
+					07 — JOURNAL
 				================================================= */}
 
 				<button
 					type="button"
 					className={styles.journal}
-					onClick={() => setViewer("journal")}
+					onClick={() =>
+						setViewer("journal")
+					}
 					aria-label="Ouvrir et lire le journal de Cabinet Hyde"
 				>
 					<motion.div
 						className={styles.journalFloat}
-						style={{ y: journalY }}
-						initial={noMotion ? false : { opacity: 0 }}
-						whileInView={{ opacity: 1 }}
-						viewport={{ once: true, amount: 0.15 }}
+						style={{
+							y: journalY,
+						}}
+						initial={
+							noMotion
+								? false
+								: { opacity: 0 }
+						}
+						whileInView={{
+							opacity: 1,
+						}}
+						viewport={{
+							once: true,
+							amount: 0.15,
+						}}
 						transition={revealTransition(0.25)}
 					>
 						<Image
@@ -479,7 +637,7 @@ export function CabinetHydeSection() {
 				</button>
 
 				{/* =================================================
-				    08 — LUMIÈRES / FINITIONS
+					08 — LUMIÈRES / FINITIONS
 				================================================= */}
 
 				<motion.div
@@ -502,7 +660,7 @@ export function CabinetHydeSection() {
 				/>
 
 				{/* =================================================
-				    09 — PROJET SUIVANT
+					09 — PROJET SUIVANT
 				================================================= */}
 
 				<a
@@ -510,11 +668,18 @@ export function CabinetHydeSection() {
 					className={styles.nextProject}
 					aria-label="Aller au projet suivant : Internet sans piège"
 				>
-					<span className={styles.nextProjectIndex}>02</span>
+					<span className={styles.nextProjectIndex}>
+						02
+					</span>
 
 					<span className={styles.nextProjectText}>
-						<small>Projet suivant</small>
-						<strong>Internet sans piège</strong>
+						<small>
+							Projet suivant
+						</small>
+
+						<strong>
+							Internet sans piège
+						</strong>
 					</span>
 
 					<span
@@ -527,7 +692,7 @@ export function CabinetHydeSection() {
 			</section>
 
 			{/* =====================================================
-			    VIEWER
+				VIEWER
 			===================================================== */}
 
 			<AnimatePresence>
@@ -541,12 +706,26 @@ export function CabinetHydeSection() {
 								? "Journal de Cabinet Hyde"
 								: "Page d’accueil de Cabinet Hyde"
 						}
-						initial={noMotion ? false : { opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						transition={{ duration: 0.25, ease: "easeOut" }}
+						initial={
+							noMotion
+								? false
+								: { opacity: 0 }
+						}
+						animate={{
+							opacity: 1,
+						}}
+						exit={{
+							opacity: 0,
+						}}
+						transition={{
+							duration: 0.25,
+							ease: "easeOut",
+						}}
 						onMouseDown={(event) => {
-							if (event.target === event.currentTarget) {
+							if (
+								event.target ===
+								event.currentTarget
+							) {
 								setViewer(null);
 							}
 						}}
@@ -554,19 +733,47 @@ export function CabinetHydeSection() {
 						<button
 							type="button"
 							className={styles.viewerClose}
-							onClick={() => setViewer(null)}
+							onClick={() =>
+								setViewer(null)
+							}
 							aria-label="Fermer"
 						>
-							<span>Fermer</span>
-							<i>×</i>
+							<span>
+								Fermer
+							</span>
+
+							<i>
+								×
+							</i>
 						</button>
 
 						<motion.div
 							className={styles.viewerInner}
-							initial={noMotion ? false : { opacity: 0, scale: 0.97 }}
-							animate={{ opacity: 1, scale: 1 }}
-							exit={{ opacity: 0, scale: 0.97 }}
-							transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+							initial={
+								noMotion
+									? false
+									: {
+										  opacity: 0,
+										  scale: 0.97,
+									  }
+							}
+							animate={{
+								opacity: 1,
+								scale: 1,
+							}}
+							exit={{
+								opacity: 0,
+								scale: 0.97,
+							}}
+							transition={{
+								duration: 0.3,
+								ease: [
+									0.22,
+									1,
+									0.36,
+									1,
+								],
+							}}
 						>
 							{viewer === "website" && (
 								<div className={styles.viewerSite}>
@@ -575,7 +782,8 @@ export function CabinetHydeSection() {
 										alt="Page d’accueil complète du site Cabinet Hyde"
 										width={1654}
 										height={750}
-										priority
+										loading="eager"
+										sizes="(max-width: 700px) 94vw, 90vw"
 										className={styles.viewerSiteImage}
 									/>
 								</div>
@@ -588,7 +796,8 @@ export function CabinetHydeSection() {
 										alt="Journal Quelques pages de ma vie en Louisiane"
 										width={1024}
 										height={1448}
-										priority
+										loading="eager"
+										sizes="(max-width: 700px) 94vw, 800px"
 										className={styles.viewerJournalImage}
 									/>
 								</div>
