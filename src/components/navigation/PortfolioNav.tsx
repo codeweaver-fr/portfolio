@@ -11,11 +11,36 @@ import styles from "./PortfolioNav.module.scss";
 ========================================================= */
 
 const mainLinks = [
- { index: "01", label: "Accueil", href: "/" },
- { index: "02", label: "Projets", href: "/#projects" },
- { index: "03", label: "Prestations", href: "/prestations" },
- { index: "04", label: "À propos", href: undefined },
- { index: "05", label: "Contact", href: "/#contact" },
+	{
+		index: "01",
+		label: "Accueil",
+		href: "/",
+	},
+	{
+		index: "02",
+		label: "Projets",
+		href: "/#projects",
+	},
+	{
+		index: "03",
+		label: "Prestations",
+		href: "/prestations",
+	},
+	{
+		index: "04",
+		label: "Technologies",
+		href: "/technologies",
+	},
+	{
+		index: "05",
+		label: "À propos",
+		href: undefined,
+	},
+	{
+		index: "06",
+		label: "Contact",
+		href: "/#contact",
+	},
 ];
 
 /* =========================================================
@@ -73,7 +98,11 @@ const trackedSections = [
 	},
 ];
 
-export function PortfolioNav({ pageLabel }: { pageLabel?: string } = {}) {
+export function PortfolioNav({
+	pageLabel,
+}: {
+	pageLabel?: string;
+} = {}) {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [scrolled, setScrolled] = useState(false);
 	const [currentSection, setCurrentSection] =
@@ -90,9 +119,13 @@ export function PortfolioNav({ pageLabel }: { pageLabel?: string } = {}) {
 
 		handleScroll();
 
-		window.addEventListener("scroll", handleScroll, {
-			passive: true,
-		});
+		window.addEventListener(
+			"scroll",
+			handleScroll,
+			{
+				passive: true,
+			},
+		);
 
 		return () => {
 			window.removeEventListener(
@@ -112,21 +145,30 @@ export function PortfolioNav({ pageLabel }: { pageLabel?: string } = {}) {
 
 	useEffect(() => {
 		if (pageLabel) return;
+
 		let frame = 0;
-		const sections = trackedSections.map(item => ({
-			...item,
-			element: document.querySelector<HTMLElement>(item.selector),
-		}));
+
+		const sections = trackedSections.map(
+			(item) => ({
+				...item,
+				element:
+					document.querySelector<HTMLElement>(
+						item.selector,
+					),
+			}),
+		);
 
 		const updateCurrentSection = () => {
 			if (frame) return;
 
 			frame = requestAnimationFrame(() => {
 				frame = 0;
+
 				const marker =
 					window.innerHeight * 0.35;
 
 				let activeLabel = "Accueil";
+
 				let closestDistance =
 					Number.POSITIVE_INFINITY;
 
@@ -298,7 +340,7 @@ export function PortfolioNav({ pageLabel }: { pageLabel?: string } = {}) {
 					aria-hidden="true"
 				>
 					<Image
-						src="/images/hero/hero-fragments.webp"
+						src="/images/hero/hero-bg.webp"
 						alt=""
 						fill
 						sizes="100vw"
@@ -360,7 +402,8 @@ export function PortfolioNav({ pageLabel }: { pageLabel?: string } = {}) {
 						/>
 
 						<span>
-							{pageLabel ?? currentSection}
+							{pageLabel ??
+								currentSection}
 						</span>
 					</div>
 
@@ -501,7 +544,7 @@ export function PortfolioNav({ pageLabel }: { pageLabel?: string } = {}) {
 								aria-hidden="true"
 							>
 								<Image
-									src="/images/hero/hero-fragments.webp"
+									src="/images/hero/hero-bg.webp"
 									alt=""
 									fill
 									sizes="50vw"
@@ -584,69 +627,96 @@ export function PortfolioNav({ pageLabel }: { pageLabel?: string } = {}) {
 									aria-label="Navigation principale"
 								>
 									{mainLinks.map(
-										(
-											link,
-										) => (
-											<a
-												key={link.index}
- aria-disabled={!link.href || undefined}
- tabIndex={link.href ? undefined : -1}
- title={link.href ? undefined : "Page À propos à venir"}
- aria-current={pageLabel === "Prestations" && link.href === "/prestations" ? "page" : undefined}
-												href={
-													link.href
-												}
-												className={
-													styles.menuLink
-												}
-												onClick={
-													closeMenu
-												}
-											>
-												<span
-													className={
-														styles.menuTabGlint
-													}
-													aria-hidden="true"
-												/>
+										(link) => {
+											const isCurrentPage =
+												(pageLabel ===
+													"Prestations" &&
+													link.href ===
+														"/prestations") ||
+												(pageLabel ===
+													"Technologies" &&
+													link.href ===
+														"/technologies");
 
-												<span
-													className={
-														styles.menuLinkIndex
-													}
-												>
-													{
+											return (
+												<a
+													key={
 														link.index
 													}
-												</span>
-
-												<span
+													aria-disabled={
+														!link.href ||
+														undefined
+													}
+													tabIndex={
+														link.href
+															? undefined
+															: -1
+													}
+													title={
+														link.href
+															? undefined
+															: "Page À propos à venir"
+													}
+													aria-current={
+														isCurrentPage
+															? "page"
+															: undefined
+													}
+													href={
+														link.href
+													}
 													className={
-														styles.menuLinkLabel
+														styles.menuLink
+													}
+													onClick={
+														closeMenu
 													}
 												>
-													{
-														link.label
-													}
-												</span>
+													<span
+														className={
+															styles.menuTabGlint
+														}
+														aria-hidden="true"
+													/>
 
-												<span
-													className={
-														styles.menuLinkLine
-													}
-													aria-hidden="true"
-												/>
+													<span
+														className={
+															styles.menuLinkIndex
+														}
+													>
+														{
+															link.index
+														}
+													</span>
 
-												<span
-													className={
-														styles.menuLinkArrow
-													}
-													aria-hidden="true"
-												>
-													↗
-												</span>
-											</a>
-										),
+													<span
+														className={
+															styles.menuLinkLabel
+														}
+													>
+														{
+															link.label
+														}
+													</span>
+
+													<span
+														className={
+															styles.menuLinkLine
+														}
+														aria-hidden="true"
+													/>
+
+													<span
+														className={
+															styles.menuLinkArrow
+														}
+														aria-hidden="true"
+													>
+														↗
+													</span>
+												</a>
+											);
+										},
 									)}
 								</nav>
 

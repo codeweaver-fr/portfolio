@@ -1,0 +1,1678 @@
+.page {
+	--paper: #f1eee6;
+	--paper-muted: #d7d2c7;
+	--acid: #b9d641;
+	--acid-light: #d3e95c;
+	--rust: #d85e3f;
+
+	--line: rgba(230, 236, 217, 0.1);
+	--line-acid: rgba(185, 214, 65, 0.24);
+
+	position: relative;
+
+	min-height: 100vh;
+
+	overflow: hidden;
+
+	background: #0c130d;
+
+	color: var(--paper);
+
+	isolation: isolate;
+}
+
+/* =========================================================
+   SCENE
+========================================================= */
+
+.scene {
+	position: absolute;
+
+	z-index: -10;
+
+	inset: 0;
+
+	overflow: hidden;
+
+	pointer-events: none;
+}
+
+/* =========================================================
+   COUCHE 01 — BACKGROUND
+========================================================= */
+
+.backgroundLayer {
+	position: absolute;
+
+	inset:
+		-220px
+		-80px;
+
+	transform-origin: center;
+
+	will-change: transform;
+}
+
+.backgroundImage {
+	object-fit: cover;
+
+	object-position: center top;
+
+	filter:
+		saturate(0.92)
+		brightness(0.92)
+		contrast(1.02);
+}
+
+/* =========================================================
+   COUCHE 02 — OMBRES / PROFONDEUR
+========================================================= */
+
+.backgroundShade {
+	position: absolute;
+
+	inset: 0;
+
+	background:
+		linear-gradient(
+			180deg,
+			rgba(2, 5, 2, 0.08) 0%,
+			rgba(3, 7, 3, 0.16) 28%,
+			rgba(3, 6, 3, 0.24) 62%,
+			rgba(2, 4, 2, 0.46) 100%
+		),
+		linear-gradient(
+			90deg,
+			rgba(2, 5, 2, 0.16),
+			transparent 25%,
+			transparent 72%,
+			rgba(2, 5, 2, 0.18)
+		);
+}
+
+.backgroundVignette {
+	position: absolute;
+
+	inset: 0;
+
+	background:
+		radial-gradient(
+			ellipse at 50% 22%,
+			transparent 0%,
+			transparent 35%,
+			rgba(0, 0, 0, 0.08) 62%,
+			rgba(0, 0, 0, 0.3) 100%
+		);
+}
+
+/* =========================================================
+   LIGHT LAYER
+========================================================= */
+
+.lightLayer {
+	position: absolute;
+
+	inset: 0;
+
+	will-change: transform;
+}
+
+.lightLayer span {
+	position: absolute;
+
+	display: block;
+
+	border-radius: 50%;
+
+	filter: blur(80px);
+}
+
+.glowOne {
+	top: 120px;
+	left: 9%;
+
+	width: 460px;
+	height: 460px;
+
+	background: rgba(168, 205, 49, 0.13);
+}
+
+.glowTwo {
+	top: 38%;
+	right: 8%;
+
+	width: 520px;
+	height: 520px;
+
+	background: rgba(97, 139, 53, 0.11);
+}
+
+.glowThree {
+	top: 72%;
+	left: 36%;
+
+	width: 620px;
+	height: 620px;
+
+	background: rgba(216, 94, 63, 0.05);
+}
+
+/* =========================================================
+   COUCHE 03 — FRAGMENTS
+========================================================= */
+
+.fragmentsLayer {
+	position: absolute;
+
+	z-index: 4;
+
+	top: 30px;
+	left: -3%;
+
+	width: 106%;
+	height: min(980px, 88vw);
+
+	opacity: 0.44;
+
+	transform-origin: center top;
+
+	will-change: transform;
+}
+
+.fragmentsImage {
+	object-fit: cover;
+
+	object-position: center top;
+
+	filter:
+		saturate(0.95)
+		brightness(0.95)
+		contrast(1.01);
+
+	mask-image:
+		linear-gradient(
+			to bottom,
+			black 0%,
+			black 65%,
+			transparent 100%
+		);
+
+	-webkit-mask-image:
+		linear-gradient(
+			to bottom,
+			black 0%,
+			black 65%,
+			transparent 100%
+		);
+}
+
+/* =========================================================
+   GRAIN
+========================================================= */
+
+.grain {
+	position: absolute;
+
+	inset: 0;
+
+	opacity: 0.16;
+
+	background-image:
+		radial-gradient(
+			rgba(255, 255, 255, 0.05) 0.6px,
+			transparent 0.6px
+		);
+
+	background-size: 4px 4px;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+	position: relative;
+
+	z-index: 10;
+
+	display: grid;
+
+	grid-template-columns:
+		minmax(0, 1.2fr)
+		minmax(300px, 0.72fr);
+
+	align-items: end;
+
+	gap:
+		clamp(
+			70px,
+			10vw,
+			160px
+		);
+
+	width:
+		min(
+			1440px,
+			calc(100% - 90px)
+		);
+
+	margin:
+		0
+		auto;
+
+	padding:
+		clamp(
+			180px,
+			17vw,
+			265px
+		)
+		0
+		100px;
+}
+
+.heroMain {
+	max-width: 900px;
+}
+
+.eyebrow {
+	display: flex;
+
+	align-items: center;
+
+	gap: 15px;
+
+	margin-bottom: 32px;
+
+	font-family:
+		var(--font-sans),
+		sans-serif;
+
+	font-size: 0.64rem;
+
+	font-weight: 650;
+
+	letter-spacing: 0.17em;
+
+	text-transform: uppercase;
+
+	color:
+		rgba(
+			235,
+			239,
+			226,
+			0.58
+		);
+}
+
+.eyebrow > span {
+	font-size: 0.8rem;
+
+	letter-spacing: normal;
+}
+
+.eyebrow i {
+	display: block;
+
+	width: 32px;
+	height: 1px;
+
+	background:
+		linear-gradient(
+			90deg,
+			var(--acid),
+			transparent
+		);
+}
+
+.eyebrow strong {
+	font-weight: 600;
+}
+
+.hero h1 {
+	margin: 0;
+
+	font-family:
+		var(--font-display),
+		sans-serif;
+
+	font-size:
+		clamp(
+			4.7rem,
+			7.5vw,
+			8.6rem
+		);
+
+	font-weight: 620;
+
+	line-height: 0.86;
+
+	letter-spacing: -0.075em;
+}
+
+.hero h1 span {
+	display: block;
+
+	margin-top: 12px;
+
+	color: var(--acid);
+
+	font-style: italic;
+
+	font-weight: 520;
+}
+
+.heroIntro {
+	max-width: 620px;
+
+	margin:
+		42px
+		0
+		0;
+
+	font-family:
+		var(--font-sans),
+		sans-serif;
+
+	font-size:
+		clamp(
+			0.95rem,
+			1vw,
+			1.08rem
+		);
+
+	line-height: 1.68;
+
+	color:
+		rgba(
+			232,
+			236,
+			222,
+			0.72
+		);
+}
+
+/* =========================================================
+   HERO ASIDE
+========================================================= */
+
+.heroAside {
+	display: grid;
+
+	grid-template-columns:
+		42px
+		1fr;
+
+	gap: 25px;
+
+	padding-bottom: 12px;
+}
+
+.asideLine {
+	width: 100%;
+	height: 1px;
+
+	margin-top: 11px;
+
+	background:
+		linear-gradient(
+			90deg,
+			var(--acid),
+			transparent
+		);
+}
+
+.heroAside strong {
+	display: block;
+
+	max-width: 390px;
+
+	font-family:
+		var(--font-display),
+		sans-serif;
+
+	font-size:
+		clamp(
+			1.25rem,
+			1.6vw,
+			1.7rem
+		);
+
+	font-weight: 500;
+
+	line-height: 1.25;
+}
+
+.heroAside p {
+	max-width: 390px;
+
+	margin:
+		25px
+		0
+		0;
+
+	font-family:
+		var(--font-sans),
+		sans-serif;
+
+	font-size: 0.84rem;
+
+	line-height: 1.72;
+
+	color:
+		rgba(
+			221,
+			226,
+			211,
+			0.62
+		);
+}
+
+/* =========================================================
+   STACK
+========================================================= */
+
+.technologies {
+	position: relative;
+
+	z-index: 10;
+
+	width:
+		min(
+			1440px,
+			calc(100% - 90px)
+		);
+
+	margin:
+		0
+		auto;
+
+	border-top:
+		1px
+		solid
+		var(--line);
+}
+
+.techGroup {
+	display: grid;
+
+	grid-template-columns:
+		340px
+		minmax(0, 1fr);
+
+	gap: 48px;
+
+	padding:
+		28px
+		0;
+
+	border-bottom:
+		1px
+		solid
+		var(--line);
+}
+
+.groupIntro {
+	display: grid;
+
+	grid-template-columns:
+		64px
+		1fr;
+
+	gap: 24px;
+
+	padding-top: 10px;
+}
+
+.groupNumber {
+	display: flex;
+
+	align-items: center;
+
+	gap: 12px;
+
+	font-family:
+		var(--font-sans),
+		sans-serif;
+
+	font-size: 0.77rem;
+
+	font-weight: 600;
+
+	color:
+		rgba(
+			231,
+			236,
+			220,
+			0.52
+		);
+}
+
+.groupNumber i {
+	display: block;
+
+	width: 27px;
+	height: 1px;
+
+	background:
+		linear-gradient(
+			90deg,
+			var(--acid),
+			transparent
+		);
+}
+
+.groupIntro h2 {
+	margin: 0;
+
+	font-family:
+		var(--font-display),
+		sans-serif;
+
+	font-size: 1.65rem;
+
+	font-weight: 600;
+
+	letter-spacing: -0.035em;
+}
+
+.groupIntro p {
+	max-width: 240px;
+
+	margin:
+		14px
+		0
+		0;
+
+	font-family:
+		var(--font-sans),
+		sans-serif;
+
+	font-size: 0.77rem;
+
+	line-height: 1.62;
+
+	color:
+		rgba(
+			221,
+			226,
+			211,
+			0.61
+		);
+}
+
+/* =========================================================
+   TECH GRID
+========================================================= */
+
+.techGrid {
+	display: grid;
+
+	grid-template-columns:
+		repeat(
+			9,
+			minmax(0, 1fr)
+		);
+
+	gap: 12px;
+
+	align-items: center;
+
+	padding:
+		18px
+		0;
+}
+
+/* Data & services */
+
+.techGroup:nth-child(2) .techGrid {
+	grid-template-columns:
+		repeat(
+			6,
+			minmax(0, 1fr)
+		);
+
+	max-width: 920px;
+}
+
+/* Qualité & workflow */
+
+.techGroup:nth-child(3) .techGrid {
+	grid-template-columns:
+		repeat(
+			6,
+			minmax(0, 1fr)
+		);
+
+	max-width: 930px;
+}
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.techCard {
+	position: relative;
+
+	display: flex;
+
+	flex-direction: column;
+
+	align-items: center;
+	justify-content: center;
+
+	gap: 13px;
+
+	min-height: 108px;
+
+	padding:
+		16px
+		10px;
+
+	overflow: hidden;
+
+	border:
+		1px
+		solid
+		rgba(
+			229,
+			235,
+			216,
+			0.12
+		);
+
+	border-radius: 10px;
+
+	background:
+		linear-gradient(
+			145deg,
+			rgba(
+				20,
+				31,
+				21,
+				0.7
+			),
+			rgba(
+				10,
+				16,
+				11,
+				0.62
+			)
+		);
+
+	box-shadow:
+		inset
+		0
+		1px
+		0
+		rgba(
+			255,
+			255,
+			255,
+			0.03
+		),
+		0
+		20px
+		50px
+		rgba(
+			0,
+			0,
+			0,
+			0.1
+		);
+
+	backdrop-filter: blur(8px);
+
+	transition:
+		top 240ms ease,
+		border-color 240ms ease,
+		background 240ms ease,
+		box-shadow 240ms ease;
+}
+
+/* Bordure teintée dans la couleur de chaque techno, au repos */
+
+.techCard:has(.cyan) {
+	border-color: rgba(67, 217, 230, 0.24);
+}
+
+.techCard:has(.blue) {
+	border-color: rgba(77, 156, 255, 0.24);
+}
+
+.techCard:has(.light) {
+	border-color: rgba(242, 242, 237, 0.2);
+}
+
+.techCard:has(.violet) {
+	border-color: rgba(166, 105, 255, 0.24);
+}
+
+.techCard:has(.orange) {
+	border-color: rgba(233, 101, 65, 0.24);
+}
+
+.techCard:has(.gold) {
+	border-color: rgba(230, 189, 56, 0.24);
+}
+
+.techCard:has(.green) {
+	border-color: rgba(66, 214, 147, 0.24);
+}
+
+.techCard:has(.acid) {
+	border-color: rgba(185, 214, 65, 0.24);
+}
+
+/* Balayage lumineux au survol */
+
+.techCard::before {
+	content: "";
+
+	position: absolute;
+
+	top: -60%;
+	left: -70%;
+
+	width: 45%;
+	height: 220%;
+
+	background:
+		linear-gradient(
+			115deg,
+			transparent 0%,
+			rgba(255, 255, 255, 0.1) 42%,
+			rgba(185, 214, 65, 0.4) 50%,
+			rgba(255, 255, 255, 0.1) 58%,
+			transparent 100%
+		);
+
+	transform:
+		translateX(-40%)
+		rotate(8deg);
+
+	pointer-events: none;
+
+	z-index: 1;
+}
+
+.techCard:hover::before {
+	transform:
+		translateX(340%)
+		rotate(8deg);
+
+	transition:
+		transform
+		800ms
+		ease;
+}
+
+.techCard:hover {
+	border-color:
+		rgba(
+			185,
+			214,
+			65,
+			0.4
+		);
+
+	background:
+		linear-gradient(
+			145deg,
+			rgba(
+				32,
+				48,
+				29,
+				0.84
+			),
+			rgba(
+				13,
+				20,
+				14,
+				0.7
+			)
+		);
+
+	box-shadow:
+		inset
+		0
+		1px
+		0
+		rgba(
+			255,
+			255,
+			255,
+			0.04
+		),
+		0
+		25px
+		60px
+		rgba(
+			0,
+			0,
+			0,
+			0.18
+		);
+}
+
+/* =========================================================
+   QUINCONCE
+
+   Motion contrôle déjà transform sur les cartes.
+   Le décalage utilise donc top pour éviter tout conflit.
+========================================================= */
+
+.techCard:nth-child(odd) {
+	top: -10px;
+}
+
+.techCard:nth-child(even) {
+	top: 10px;
+}
+
+.techCard:nth-child(odd):hover {
+	top: -16px;
+}
+
+.techCard:nth-child(even):hover {
+	top: 4px;
+}
+
+.techCard > span {
+	font-family:
+		var(--font-sans),
+		sans-serif;
+
+	font-size: 0.68rem;
+
+	font-weight: 550;
+
+	text-align: center;
+
+	color:
+		rgba(
+			239,
+			241,
+			233,
+			0.82
+		);
+}
+
+.techMark {
+	position: relative;
+
+	z-index: 2;
+
+	display: flex;
+
+	align-items: center;
+	justify-content: center;
+
+	width: 39px;
+	height: 39px;
+
+	border:
+		1px
+		solid
+		currentColor;
+
+	border-radius: 9px;
+
+	font-family:
+		var(--font-sans),
+		sans-serif;
+
+	font-size: 0.78rem;
+
+	font-weight: 800;
+
+	color: var(--acid);
+
+	box-shadow:
+		0
+		0
+		25px
+		rgba(
+			185,
+			214,
+			65,
+			0.06
+		);
+
+	transition:
+		transform 280ms ease,
+		box-shadow 280ms ease,
+		filter 280ms ease;
+}
+
+.techCard:hover .techMark {
+	transform: scale(1.14);
+
+	filter:
+		drop-shadow(
+			0
+			0
+			6px
+			currentColor
+		);
+
+	box-shadow:
+		0
+		0
+		0
+		1px
+		currentColor,
+		0
+		0
+		18px
+		currentColor,
+		0
+		0
+		36px
+		currentColor;
+
+	animation:
+		techMarkFlicker
+		1.5s
+		ease-in-out
+		infinite;
+}
+
+@keyframes techMarkFlicker {
+	0%,
+	100% {
+		opacity: 1;
+	}
+
+	46% {
+		opacity: 0.72;
+	}
+
+	54% {
+		opacity: 1;
+	}
+
+	80% {
+		opacity: 0.86;
+	}
+}
+
+.techCard > span {
+	position: relative;
+
+	z-index: 2;
+}
+
+.cyan {
+	color: #43d9e6;
+}
+
+.blue {
+	color: #4d9cff;
+}
+
+.light {
+	color: #f2f2ed;
+}
+
+.violet {
+	color: #a669ff;
+}
+
+.orange {
+	color: #e96541;
+}
+
+.gold {
+	color: #e6bd38;
+}
+
+.green {
+	color: #42d693;
+}
+
+.acid {
+	color: var(--acid);
+}
+
+/* =========================================================
+   PHILOSOPHY
+========================================================= */
+
+.philosophy {
+	position: relative;
+
+	z-index: 10;
+
+	display: grid;
+
+	grid-template-columns:
+		minmax(0, 1.05fr)
+		minmax(380px, 0.72fr);
+
+	gap:
+		clamp(
+			80px,
+			9vw,
+			150px
+		);
+
+	width:
+		min(
+			1180px,
+			calc(100% - 90px)
+		);
+
+	margin:
+		90px
+		auto
+		0;
+
+	padding-bottom: 110px;
+}
+
+.philosophyLead {
+	display: grid;
+
+	grid-template-columns:
+		36px
+		1fr;
+
+	gap: 22px;
+}
+
+.acidLine {
+	width: 34px;
+	height: 1px;
+
+	margin-top: 16px;
+
+	background: var(--acid);
+}
+
+.philosophyLead h2 {
+	margin: 0;
+
+	font-family:
+		var(--font-display),
+		sans-serif;
+
+	font-size:
+		clamp(
+			2.4rem,
+			3.5vw,
+			4rem
+		);
+
+	font-weight: 540;
+
+	line-height: 0.98;
+
+	letter-spacing: -0.055em;
+}
+
+.philosophyLead h2 span {
+	display: block;
+
+	margin-top: 6px;
+
+	color: var(--acid);
+
+	font-style: italic;
+}
+
+.philosophyLead p {
+	max-width: 630px;
+
+	margin:
+		30px
+		0
+		0;
+
+	font-family:
+		var(--font-sans),
+		sans-serif;
+
+	font-size: 0.85rem;
+
+	line-height: 1.72;
+
+	color:
+		rgba(
+			221,
+			226,
+			211,
+			0.62
+		);
+}
+
+/* =========================================================
+   PRINCIPLES
+========================================================= */
+
+.principles {
+	border-left:
+		1px
+		solid
+		var(--line);
+}
+
+.principles article {
+	display: grid;
+
+	grid-template-columns:
+		48px
+		1fr;
+
+	gap: 20px;
+
+	padding:
+		20px
+		0
+		20px
+		28px;
+
+	border-bottom:
+		1px
+		solid
+		var(--line);
+}
+
+.principles article:first-child {
+	border-top:
+		1px
+		solid
+		var(--line);
+}
+
+.principles article > span {
+	display: flex;
+
+	align-items: center;
+	justify-content: center;
+
+	width: 34px;
+	height: 34px;
+
+	color: var(--acid);
+
+	font-size: 1.45rem;
+}
+
+.principles h3 {
+	margin: 0;
+
+	font-family:
+		var(--font-display),
+		sans-serif;
+
+	font-size: 1rem;
+
+	font-weight: 600;
+}
+
+.principles p {
+	margin:
+		5px
+		0
+		0;
+
+	font-family:
+		var(--font-sans),
+		sans-serif;
+
+	font-size: 0.76rem;
+
+	line-height: 1.58;
+
+	color:
+		rgba(
+			221,
+			226,
+			211,
+			0.61
+		);
+}
+
+/* =========================================================
+   END
+========================================================= */
+
+.end {
+	position: relative;
+
+	z-index: 10;
+
+	width:
+		min(
+			1180px,
+			calc(100% - 90px)
+		);
+
+	margin:
+		0
+		auto;
+
+	padding:
+		0
+		0
+		90px;
+}
+
+.endLine {
+	width: 100%;
+	height: 1px;
+
+	margin-bottom: 28px;
+
+	background:
+		linear-gradient(
+			90deg,
+			transparent,
+			rgba(
+				185,
+				214,
+				65,
+				0.22
+			),
+			transparent
+		);
+}
+
+.end p {
+	display: flex;
+
+	align-items: center;
+	justify-content: space-between;
+
+	gap: 30px;
+
+	margin: 0;
+
+	font-family:
+		var(--font-display),
+		sans-serif;
+
+	font-size:
+		clamp(
+			1rem,
+			1.4vw,
+			1.2rem
+		);
+
+	color:
+		rgba(
+			235,
+			239,
+			226,
+			0.66
+		);
+}
+
+.end a {
+	display: inline-flex;
+
+	align-items: center;
+
+	gap: 12px;
+
+	color: var(--acid);
+
+	text-decoration: none;
+}
+
+.end a span {
+	transition:
+		transform
+		200ms
+		ease;
+}
+
+.end a:hover span {
+	transform:
+		translateX(
+			5px
+		);
+}
+
+/* =========================================================
+   >= 1600 (très grands écrans)
+========================================================= */
+
+@media (min-width: 1600px) {
+	.techGrid {
+		max-width: 1240px;
+	}
+}
+
+/* =========================================================
+   <= 1280
+========================================================= */
+
+@media (max-width: 1280px) {
+	.techGroup {
+		grid-template-columns:
+			285px
+			1fr;
+	}
+
+	.techGrid {
+		grid-template-columns:
+			repeat(
+				4,
+				minmax(
+					100px,
+					1fr
+				)
+			);
+	}
+
+	.techGroup:nth-child(2)
+		.techGrid {
+		grid-template-columns:
+			repeat(
+				5,
+				minmax(
+					90px,
+					1fr
+				)
+			);
+	}
+
+	.techGroup:nth-child(3)
+		.techGrid {
+		grid-template-columns:
+			repeat(
+				3,
+				minmax(
+					120px,
+					1fr
+				)
+			);
+	}
+
+	.fragmentsLayer {
+		opacity: 0.36;
+	}
+}
+
+/* =========================================================
+   <= 1000
+========================================================= */
+
+@media (max-width: 1000px) {
+	.hero {
+		grid-template-columns: 1fr;
+
+		gap: 58px;
+
+		width:
+			calc(
+				100% - 56px
+			);
+
+		padding-top: 170px;
+	}
+
+	.heroAside {
+		max-width: 600px;
+	}
+
+	.technologies {
+		width:
+			calc(
+				100% - 56px
+			);
+	}
+
+	.techGroup {
+		grid-template-columns: 1fr;
+
+		gap: 30px;
+
+		padding:
+			42px
+			0;
+	}
+
+	.groupIntro {
+		grid-template-columns:
+			60px
+			1fr;
+	}
+
+	.groupIntro p {
+		max-width: 520px;
+	}
+
+	.techGrid,
+	.techGroup:nth-child(2)
+		.techGrid,
+	.techGroup:nth-child(3)
+		.techGrid {
+		grid-template-columns:
+			repeat(
+				4,
+				1fr
+			);
+
+		max-width: none;
+	}
+
+	.philosophy {
+		grid-template-columns: 1fr;
+
+		gap: 58px;
+
+		width:
+			calc(
+				100% - 56px
+			);
+	}
+
+	.principles {
+		max-width: 650px;
+	}
+
+	.end {
+		width:
+			calc(
+				100% - 56px
+			);
+	}
+}
+
+/* =========================================================
+   <= 700
+========================================================= */
+
+@media (max-width: 700px) {
+	.hero {
+		width:
+			calc(
+				100% - 32px
+			);
+
+		padding:
+			145px
+			0
+			72px;
+	}
+
+	.eyebrow {
+		margin-bottom: 26px;
+	}
+
+	.hero h1 {
+		font-size:
+			clamp(
+				3.8rem,
+				18vw,
+				5.7rem
+			);
+	}
+
+	.heroIntro {
+		margin-top: 30px;
+	}
+
+	.heroAside {
+		grid-template-columns:
+			25px
+			1fr;
+
+		gap: 14px;
+	}
+
+	.technologies {
+		width:
+			calc(
+				100% - 32px
+			);
+	}
+
+	.techGroup {
+		padding:
+			38px
+			0;
+	}
+
+	.groupIntro {
+		grid-template-columns: 1fr;
+
+		gap: 13px;
+	}
+
+	.techGrid,
+	.techGroup:nth-child(2)
+		.techGrid,
+	.techGroup:nth-child(3)
+		.techGrid {
+		grid-template-columns:
+			repeat(
+				2,
+				1fr
+			);
+	}
+
+	.techCard {
+		min-height: 104px;
+	}
+
+	.techCard:nth-child(even),
+	.techCard:nth-child(odd) {
+		top: 0;
+	}
+
+	.techCard:nth-child(even):hover,
+	.techCard:nth-child(odd):hover {
+		top: -5px;
+	}
+
+	.philosophy {
+		width:
+			calc(
+				100% - 32px
+			);
+
+		margin-top: 65px;
+
+		padding-bottom: 75px;
+	}
+
+	.philosophyLead {
+		grid-template-columns: 1fr;
+
+		gap: 18px;
+	}
+
+	.acidLine {
+		margin-top: 0;
+	}
+
+	.principles {
+		border-left: 0;
+	}
+
+	.principles article {
+		padding-left: 0;
+	}
+
+	.end {
+		width:
+			calc(
+				100% - 32px
+			);
+
+		padding-bottom: 60px;
+	}
+
+	.end p {
+		flex-direction: column;
+
+		align-items: flex-start;
+	}
+
+	.fragmentsLayer {
+		top: 60px;
+
+		left: -38%;
+
+		width: 176%;
+
+		height: 720px;
+
+		opacity: 0.3;
+	}
+}
+
+/* =========================================================
+   <= 430
+========================================================= */
+
+@media (max-width: 430px) {
+	.hero h1 {
+		font-size:
+			clamp(
+				3.5rem,
+				18vw,
+				4.8rem
+			);
+	}
+
+	.techGrid,
+	.techGroup:nth-child(2)
+		.techGrid,
+	.techGroup:nth-child(3)
+		.techGrid {
+		gap: 9px;
+	}
+
+	.techCard {
+		min-height: 98px;
+
+		padding:
+			14px
+			7px;
+	}
+
+	.fragmentsLayer {
+		opacity: 0.24;
+	}
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+	.techCard,
+	.techCard::before,
+	.techMark,
+	.end a span {
+		transition: none;
+	}
+
+	.techCard:hover .techMark {
+		animation: none;
+	}
+}

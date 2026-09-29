@@ -1,22 +1,19 @@
 .hero {
 	position: relative;
-
-	/*
-	 * 230vh :
-	 * suffisamment de distance pour créer une scène immersive,
-	 * mais sans retenir artificiellement le visiteur.
-	 */
-	min-height: 230vh;
-
+	min-height: 220vh;
 	overflow: clip;
 
-	background: #050605;
+	background: #040704;
 	color: var(--paper);
 }
 
+/* =========================================================
+   STAGE
+========================================================= */
+
 .stage {
-	--pointer-x: 70%;
-	--pointer-y: 38%;
+	--pointer-x: 65%;
+	--pointer-y: 42%;
 	--pointer-dx: 0px;
 	--pointer-dy: 0px;
 
@@ -29,60 +26,50 @@
 	overflow: hidden;
 	isolation: isolate;
 
-	background: #050605;
+	background: #040704;
 
 	transform: translateZ(0);
 	backface-visibility: hidden;
 }
 
 /* =========================================================
-   BACKGROUND
+   01 — BACKGROUND
 ========================================================= */
 
-.depthLayer {
+.backgroundLayer {
 	position: absolute;
 	z-index: 1;
 
-	inset: -8%;
-
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
+	inset: -4%;
 
 	transform-origin: center;
 
-	will-change:
-		transform,
-		opacity;
-
+	will-change: transform, opacity;
 	backface-visibility: hidden;
 }
 
-.fragmentsLayer {
-	position: absolute;
-	z-index: 5;
+.backgroundImage {
+	object-fit: cover;
+	object-position: center;
 
-	inset: -7%;
+	filter:
+		saturate(0.92)
+		brightness(0.82)
+		contrast(1.04);
 
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
+	transform:
+		translate(
+			calc(var(--pointer-dx) * -0.12),
+			calc(var(--pointer-dy) * -0.12)
+		);
 
-	mix-blend-mode: screen;
-
-	pointer-events: none;
-
-	transform-origin: center;
-
-	will-change:
-		transform,
-		opacity;
-
-	backface-visibility: hidden;
+	transition:
+		transform 700ms
+		cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* =========================================================
-   ATMOSPHÈRE
+   ATMOSPHÈRE DU FOND
 ========================================================= */
 
 .atmosphere {
@@ -91,111 +78,234 @@
 
 	inset: 0;
 
+	pointer-events: none;
+
 	background:
 		radial-gradient(
-			circle at
-				var(--pointer-x)
-				var(--pointer-y),
-			rgba(185, 214, 65, 0.12),
-			transparent 20%
+			circle at var(--pointer-x) var(--pointer-y),
+			rgba(185, 214, 65, 0.11),
+			transparent 23%
 		),
 		radial-gradient(
-			ellipse at 78% 67%,
-			rgba(216, 94, 63, 0.07),
-			transparent 25%
+			ellipse at 14% 55%,
+			rgba(75, 124, 67, 0.11),
+			transparent 33%
+		),
+		radial-gradient(
+			ellipse at 82% 35%,
+			rgba(132, 173, 65, 0.09),
+			transparent 31%
 		);
-
-	pointer-events: none;
 }
 
-.readability {
+/* =========================================================
+   02 — SECOND PLAN
+
+   Important :
+   les images gauche / droite ne couvrent PLUS tout l'écran.
+   Elles restent ancrées sur leur bord.
+========================================================= */
+
+.depthLayer {
 	position: absolute;
 	z-index: 4;
 
+	pointer-events: none;
+
+	transform-origin: center;
+
+	will-change: transform, opacity;
+	backface-visibility: hidden;
+
+	mix-blend-mode: screen;
+}
+
+/* ---- gauche ---- */
+
+.depthLeft {
+	top: 2vh;
+	left: -7vw;
+
+	width: 42vw;
+	height: 92vh;
+}
+
+/* ---- droite ---- */
+
+.depthRight {
+	top: -2vh;
+	right: -7vw;
+
+	width: 43vw;
+	height: 94vh;
+}
+
+.depthImage {
+	object-fit: contain;
+
+	filter:
+		saturate(0.83)
+		brightness(0.67)
+		contrast(1.05);
+}
+
+.depthLeft .depthImage {
+	object-position: left center;
+
+	transform:
+		translate(
+			calc(var(--pointer-dx) * -0.28),
+			calc(var(--pointer-dy) * -0.22)
+		);
+}
+
+.depthRight .depthImage {
+	object-position: right center;
+
+	transform:
+		translate(
+			calc(var(--pointer-dx) * 0.28),
+			calc(var(--pointer-dy) * -0.22)
+		);
+}
+
+/* =========================================================
+   LISIBILITÉ
+
+   Placé APRÈS le second plan mais AVANT le premier plan.
+========================================================= */
+
+.readability {
+	position: absolute;
+	z-index: 8;
+
 	inset: 0;
+
+	pointer-events: none;
 
 	background:
 		linear-gradient(
 			90deg,
-			rgba(3, 4, 3, 0.91) 0%,
-			rgba(3, 4, 3, 0.74) 21%,
-			rgba(3, 4, 3, 0.42) 45%,
-			rgba(3, 4, 3, 0.06) 71%,
-			rgba(3, 4, 3, 0.12) 100%
+			rgba(1, 4, 2, 0.39) 0%,
+			rgba(1, 4, 2, 0.21) 31%,
+			rgba(1, 4, 2, 0.04) 61%,
+			rgba(1, 4, 2, 0.12) 100%
 		),
 		linear-gradient(
 			180deg,
-			rgba(3, 4, 3, 0.06),
-			transparent 40%,
-			rgba(3, 4, 3, 0.08) 73%,
-			rgba(3, 4, 3, 0.22)
+			rgba(0, 0, 0, 0.1) 0%,
+			transparent 29%,
+			transparent 72%,
+			rgba(0, 0, 0, 0.2) 100%
 		);
-
-	pointer-events: none;
 }
 
 /* =========================================================
-   HEADER
+   03 — PREMIER PLAN
+
+   Ces deux images viennent surtout fermer le cadre par le bas.
 ========================================================= */
 
-.topbar {
+.frontLayer {
 	position: absolute;
-	z-index: 60;
+	z-index: 20;
 
-	top: 0;
+	pointer-events: none;
+
+	transform-origin: center;
+
+	will-change: transform, opacity;
+	backface-visibility: hidden;
+
+	mix-blend-mode: screen;
+}
+
+/* ---- gauche ---- */
+
+.frontLeft {
+	left: -8vw;
+	bottom: -12vh;
+
+	width: 48vw;
+	height: 72vh;
+}
+
+/* ---- droite ---- */
+
+.frontRight {
+	right: -8vw;
+	bottom: -12vh;
+
+	width: 48vw;
+	height: 74vh;
+}
+
+.frontImage {
+	object-fit: contain;
+
+	filter:
+		saturate(0.96)
+		brightness(0.88)
+		contrast(1.06);
+}
+
+.frontLeft .frontImage {
+	object-position: left bottom;
+
+	transform:
+		translate(
+			calc(var(--pointer-dx) * -0.55),
+			calc(var(--pointer-dy) * -0.42)
+		);
+}
+
+.frontRight .frontImage {
+	object-position: right bottom;
+
+	transform:
+		translate(
+			calc(var(--pointer-dx) * 0.55),
+			calc(var(--pointer-dy) * -0.42)
+		);
+}
+
+/* =========================================================
+   04 — PARTICULES
+
+   Devant les cristaux.
+   Derrière le contenu.
+========================================================= */
+
+.particlesLayer {
+	position: absolute;
+	z-index: 26;
+
+	inset: -8%;
+
+	overflow: hidden;
+
+	pointer-events: none;
+
+	mix-blend-mode: screen;
+
+	will-change: transform, opacity;
+}
+
+.scrollProgress {
+	position: absolute;
+	z-index: 51;
+	bottom: 0;
 	left: 0;
+	right: 0;
+	height: 2px;
+	pointer-events: none;
+	background: rgba(185, 214, 65, 0.08);
 
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-
-	width: 100%;
-
-	padding: 28px 42px;
-
-	.name {
-		color: var(--paper);
-
-		font-size: 0.94rem;
-		font-weight: 600;
-
-		letter-spacing: -0.03em;
-	}
-
-	.contact {
-		display: flex;
-		align-items: center;
-
-		gap: 18px;
-
-		color: rgba(241, 238, 230, 0.9);
-
-		font-size: 0.9rem;
-
-		span {
-			display: block;
-
-			width: 48px;
-			height: 1px;
-
-			background:
-				rgba(
-					241,
-					238,
-					230,
-					0.46
-				);
-
-			transition:
-				width 220ms ease,
-				background 220ms ease;
-		}
-
-		&:hover span {
-			width: 66px;
-
-			background: var(--acid);
-		}
+	span {
+		display: block;
+		height: 100%;
+		background: linear-gradient(90deg, #738c2b, #dff394);
+		transform-origin: left;
 	}
 }
 
@@ -205,66 +315,83 @@
 
 .kicker {
 	position: absolute;
-	z-index: 45;
+	z-index: 35;
 
-	top: 13.5vh;
-	left: 5vw;
+	top:
+		clamp(
+			120px,
+			14vh,
+			155px
+		);
+
+	left:
+		max(
+			5vw,
+			calc(
+				(100vw - 1720px) /
+				2
+			)
+		);
 
 	display: flex;
+
 	align-items: center;
 
-	gap: 16px;
+	gap: 17px;
 
 	color:
-		rgba(
-			241,
-			238,
-			230,
-			0.68
-		);
+		rgba(241, 238, 230, 0.72);
+
+	font-family:
+		var(--font-sans),
+		sans-serif;
 
 	font-size:
 		clamp(
 			0.62rem,
-			0.7vw,
+			0.68vw,
 			0.76rem
 		);
 
-	font-weight: 500;
+	font-weight: 600;
 
-	letter-spacing: 0.25em;
+	letter-spacing: 0.23em;
 
 	text-transform: uppercase;
+}
 
-	span {
-		width: 36px;
-		height: 1px;
+.kicker span {
+	display: block;
 
-		background: var(--acid);
-	}
+	width: 36px;
+	height: 1px;
+
+	background: var(--acid);
 }
 
 /* =========================================================
    TITRE
-
-   Les deux premières phrases remontent ensemble.
-   Le bloc solution reste plus bas.
-
-   Typographie volontairement réduite :
-   le nouveau texte comporte davantage de lignes.
 ========================================================= */
 
 .statement {
 	position: absolute;
-	z-index: 15;
+	z-index: 30;
 
-	top: 39%;
-	left: 5vw;
+	top: 30%;
+
+	left:
+		max(
+			5vw,
+			calc(
+				(100vw - 1720px) /
+				2
+			)
+		);
 
 	width:
 		min(
-			1180px,
-			88vw
+			1320px,
+			86vw
 		);
 
 	will-change:
@@ -272,28 +399,27 @@
 		opacity;
 
 	backface-visibility: hidden;
+}
 
-	h1 {
-		margin: 0;
+.statement h1 {
+	margin: 0;
 
-		font-family:
-			var(--font-display),
-			sans-serif;
+	font-family:
+		var(--font-display),
+		sans-serif;
 
-		font-size:
-			clamp(
-				3.2rem,
-				5.8vw,
-				6.7rem
-			);
+	font-size:
+		clamp(
+			3.4rem,
+			5.8vw,
+			6.8rem
+		);
 
-		font-weight: 500;
+	font-weight: 500;
 
-		line-height: 0.92;
+	line-height: 0.9;
 
-		letter-spacing:
-			-0.065em;
-	}
+	letter-spacing: -0.065em;
 }
 
 .line {
@@ -305,30 +431,21 @@
 	white-space: nowrap;
 }
 
-/* =========================================================
-   CONSTAT
-========================================================= */
-
 .line:first-child,
 .lineTwo {
 	position: relative;
 
-	transform:
-		translateY(-0.68em);
+	translate: 0 -0.69em;
 }
 
 .lineTwo {
 	margin-left: 5vw;
 }
 
-/* =========================================================
-   SOLUTION
-========================================================= */
-
 .lineThree {
-	margin-left: 2vw;
+	margin-top: 0.22em;
 
-	margin-top: 0.14em;
+	margin-left: 2vw;
 }
 
 .inlineAccent {
@@ -337,13 +454,8 @@
 	font-weight: inherit;
 
 	text-shadow:
-		0 0 26px
-		rgba(
-			185,
-			214,
-			65,
-			0.06
-		);
+		0 0 28px
+		rgba(185, 214, 65, 0.08);
 }
 
 .lineAccent {
@@ -353,631 +465,129 @@
 }
 
 /* =========================================================
-   VERRE
-========================================================= */
-
-.glassShard {
-	position: absolute;
-
-	pointer-events: none;
-
-	transform-origin: center;
-
-	will-change: transform;
-
-	backface-visibility: hidden;
-
-	transform-style:
-		preserve-3d;
-}
-
-.glassSurface {
-	position: absolute;
-
-	inset: 0;
-
-	overflow: hidden;
-
-	background:
-		linear-gradient(
-			135deg,
-			rgba(
-				255,
-				255,
-				255,
-				0.12
-			),
-			rgba(
-				185,
-				214,
-				65,
-				0.06
-			) 33%,
-			rgba(
-				255,
-				255,
-				255,
-				0.02
-			) 62%,
-			rgba(
-				216,
-				94,
-				63,
-				0.04
-			)
-		);
-
-	box-shadow:
-		inset 0 0 0 1px
-			rgba(
-				241,
-				238,
-				230,
-				0.16
-			),
-		inset 1px 1px 0
-			rgba(
-				236,
-				255,
-				177,
-				0.2
-			),
-		inset -1px -1px 0
-			rgba(
-				255,
-				134,
-				78,
-				0.1
-			),
-		0 18px 38px
-			rgba(
-				0,
-				0,
-				0,
-				0.25
-			);
-}
-
-/* =========================================================
-   REFLET SOURIS
-========================================================= */
-
-.glassReflection {
-	position: absolute;
-
-	inset: -45%;
-
-	background:
-		radial-gradient(
-			circle at
-				var(--pointer-x)
-				var(--pointer-y),
-			rgba(
-				247,
-				255,
-				218,
-				0.56
-			) 0%,
-			rgba(
-				209,
-				236,
-				106,
-				0.3
-			) 9%,
-			rgba(
-				255,
-				255,
-				255,
-				0.18
-			) 18%,
-			rgba(
-				255,
-				255,
-				255,
-				0.055
-			) 27%,
-			transparent 43%
-		),
-		linear-gradient(
-			112deg,
-			transparent 19%,
-			rgba(
-				255,
-				255,
-				255,
-				0.17
-			) 33%,
-			rgba(
-				255,
-				255,
-				255,
-				0.34
-			) 39%,
-			rgba(
-				230,
-				255,
-				169,
-				0.2
-			) 44%,
-			transparent 53%
-		);
-
-	mix-blend-mode: screen;
-
-	opacity: 1;
-
-	transform:
-		translate3d(
-			var(--pointer-dx),
-			var(--pointer-dy),
-			0
-		);
-
-	transition:
-		transform 110ms
-		cubic-bezier(
-			0.25,
-			1,
-			0.5,
-			1
-		);
-}
-
-/* =========================================================
-   ARÊTES
-========================================================= */
-
-.glassEdge {
-	position: absolute;
-
-	inset: 0;
-
-	background:
-		linear-gradient(
-			130deg,
-			rgba(
-				227,
-				249,
-				154,
-				0.36
-			),
-			transparent 16%,
-			transparent 68%,
-			rgba(
-				216,
-				94,
-				63,
-				0.27
-			) 88%,
-			rgba(
-				255,
-				217,
-				184,
-				0.4
-			)
-		);
-
-	mix-blend-mode: screen;
-
-	opacity: 0.96;
-}
-
-/* =========================================================
-   VERRE 01
-========================================================= */
-
-.shardOne {
-	z-index: 11;
-
-	top: 3vh;
-	right: 26vw;
-
-	width:
-		clamp(
-			160px,
-			17vw,
-			320px
-		);
-
-	height: 68vh;
-
-	clip-path:
-		polygon(
-			32% 0,
-			88% 7%,
-			100% 31%,
-			71% 52%,
-			87% 79%,
-			55% 100%,
-			12% 83%,
-			0 43%
-		);
-
-	opacity: 0.52;
-}
-
-/* =========================================================
-   VERRE 02
-========================================================= */
-
-.shardTwo {
-	z-index: 18;
-
-	top: 19vh;
-	right: 6vw;
-
-	width:
-		clamp(
-			180px,
-			19vw,
-			360px
-		);
-
-	height: 48vh;
-
-	clip-path:
-		polygon(
-			14% 12%,
-			63% 0,
-			94% 21%,
-			100% 58%,
-			71% 100%,
-			24% 85%,
-			0 53%
-		);
-
-	opacity: 0.62;
-}
-
-/* =========================================================
-   VERRE 03
-========================================================= */
-
-.shardThree {
-	z-index: 22;
-
-	right: -3vw;
-	bottom: -4vh;
-
-	width:
-		clamp(
-			250px,
-			31vw,
-			590px
-		);
-
-	height: 39vh;
-
-	clip-path:
-		polygon(
-			7% 21%,
-			43% 0,
-			81% 9%,
-			100% 42%,
-			86% 75%,
-			61% 100%,
-			21% 88%,
-			0 56%
-		);
-
-	opacity: 0.56;
-}
-
-/* =========================================================
-   VAGUE DE LUMIÈRE
-========================================================= */
-
-.lightSweep {
-	position: absolute;
-	z-index: 23;
-
-	top: 30%;
-	left: 25%;
-
-	width: 75vw;
-	height: 24vh;
-
-	border-radius: 50%;
-
-	background:
-		linear-gradient(
-			100deg,
-			transparent 0%,
-			rgba(
-				185,
-				214,
-				65,
-				0.025
-			) 20%,
-			rgba(
-				216,
-				238,
-				115,
-				0.18
-			) 42%,
-			rgba(
-				241,
-				238,
-				230,
-				0.19
-			) 49%,
-			rgba(
-				255,
-				132,
-				74,
-				0.14
-			) 57%,
-			transparent 78%
-		);
-
-	filter: blur(14px);
-
-	mix-blend-mode: screen;
-
-	pointer-events: none;
-
-	transform-origin: center;
-
-	will-change:
-		transform,
-		opacity;
-}
-
-/* =========================================================
-   TRACE ORANGE
-========================================================= */
-
-.orangeFracture {
-	position: absolute;
-	z-index: 24;
-
-	top: 58%;
-	right: 6%;
-
-	width:
-		clamp(
-			220px,
-			27vw,
-			510px
-		);
-
-	height: 20px;
-
-	pointer-events: none;
-
-	transform-origin: center;
-
-	will-change:
-		transform,
-		opacity;
-
-	span {
-		position: absolute;
-
-		top: 50%;
-		left: 0;
-
-		width: 100%;
-		height: 1px;
-
-		background:
-			linear-gradient(
-				90deg,
-				transparent,
-				rgba(
-					216,
-					94,
-					63,
-					0.08
-				) 10%,
-				rgba(
-					255,
-					107,
-					57,
-					0.78
-				) 41%,
-				rgba(
-					255,
-					220,
-					181,
-					1
-				) 50%,
-				rgba(
-					216,
-					94,
-					63,
-					0.28
-				) 67%,
-				transparent
-			);
-
-		box-shadow:
-			0 0 8px
-				rgba(
-					255,
-					105,
-					58,
-					0.5
-				),
-			0 0 23px
-				rgba(
-					216,
-					94,
-					63,
-					0.2
-				);
-	}
-}
-
-/* =========================================================
-   SORTIE
-========================================================= */
-
-.exitWash {
-	position: absolute;
-	z-index: 29;
-
-	inset: 0;
-
-	background:
-		linear-gradient(
-			180deg,
-			transparent 0%,
-			rgba(
-				8,
-				9,
-				8,
-				0.03
-			) 40%,
-			rgba(
-				8,
-				9,
-				8,
-				0.42
-			) 80%,
-			#080908 100%
-		);
-
-	pointer-events: none;
-}
-
-/* =========================================================
-   NAVIGATION
+   RAIL DROIT
 ========================================================= */
 
 .sideRail {
 	position: absolute;
-	z-index: 50;
+	z-index: 36;
 
 	top: 45%;
-	right: 3vw;
+	right: 3.7vw;
 
 	display: flex;
+
 	flex-direction: column;
+
 	align-items: flex-end;
 
-	gap: 12vh;
+	gap: 80px;
 
-	transform:
-		translateY(-40%);
+	transform: translateY(-50%);
 }
 
 .steps {
-	position: relative;
-
 	display: flex;
+
 	flex-direction: column;
+
 	align-items: flex-end;
 
-	gap: 17px;
+	gap: 23px;
+}
 
-	padding-right: 13px;
+.steps span {
+	position: relative;
+
+	display: block;
+
+	min-width: 42px;
 
 	color:
-		rgba(
-			241,
-			238,
-			230,
-			0.4
-		);
+		rgba(241, 238, 230, 0.38);
 
-	font-size: 0.76rem;
+	font-family:
+		var(--font-sans),
+		sans-serif;
+
+	font-size: 0.68rem;
+
+	font-weight: 600;
 
 	letter-spacing: 0.08em;
-
-	&::after {
-		content: "";
-
-		position: absolute;
-
-		top: -9px;
-		right: 0;
-		bottom: -9px;
-
-		width: 1px;
-
-		background:
-			rgba(
-				241,
-				238,
-				230,
-				0.16
-			);
-	}
-
-	span {
-		position: relative;
-	}
-
-	.active {
-		color: var(--paper);
-
-		&::after {
-			content: "";
-
-			position: absolute;
-
-			top: 50%;
-			left:
-				calc(
-					100% + 13px
-				);
-
-			width: 18px;
-			height: 1px;
-
-			background:
-				var(--acid);
-		}
-	}
 }
+
+.steps .active {
+	color: var(--acid);
+}
+
+.steps .active::after {
+	content: "";
+
+	position: absolute;
+
+	top: 50%;
+
+	left:
+		calc(
+			100% + 10px
+		);
+
+	width: 24px;
+	height: 1px;
+
+	background: var(--acid);
+}
+
+/* =========================================================
+   LIEN PROJETS
+========================================================= */
 
 .projectsLink {
 	display: flex;
+
 	flex-direction: column;
 
+	gap: 5px;
+
 	color:
-		rgba(
-			241,
-			238,
-			230,
-			0.66
-		);
+		rgba(241, 238, 230, 0.72);
 
-	font-size: 0.66rem;
-	line-height: 1.4;
+	font-family:
+		var(--font-sans),
+		sans-serif;
 
-	letter-spacing: 0.27em;
+	font-size: 0.63rem;
+
+	font-weight: 600;
+
+	letter-spacing: 0.19em;
 
 	text-transform: uppercase;
 
-	i {
-		display: block;
+	text-decoration: none;
+}
 
-		width: 60px;
-		height: 1px;
+.projectsLink i {
+	display: block;
 
-		margin-top: 11px;
+	width: 44px;
+	height: 1px;
 
-		background:
-			rgba(
-				241,
-				238,
-				230,
-				0.43
-			);
+	margin-top: 8px;
 
-		transition:
-			width 220ms ease,
-			background 220ms ease;
-	}
+	background:
+		rgba(241, 238, 230, 0.46);
 
-	&:hover i {
-		width: 82px;
+	transition:
+		width 220ms ease,
+		background 220ms ease;
+}
 
-		background:
-			var(--acid);
-	}
+.projectsLink:hover i {
+	width: 64px;
+
+	background: var(--acid);
 }
 
 /* =========================================================
@@ -986,61 +596,67 @@
 
 .scrollHint {
 	position: absolute;
-	z-index: 50;
+	z-index: 36;
 
-	left: 42px;
-	bottom: 28px;
+	bottom: 30px;
+	left: 5vw;
 
 	display: flex;
-	flex-direction: column;
+
 	align-items: center;
 
-	gap: 9px;
+	gap: 13px;
 
 	color:
-		rgba(
-			241,
-			238,
-			230,
-			0.62
-		);
+		rgba(241, 238, 230, 0.46);
 
-	pointer-events: none;
-}
+	font-family:
+		var(--font-sans),
+		sans-serif;
 
-.scrollWord {
-	font-size: 0.61rem;
+	font-size: 0.59rem;
 
-	letter-spacing: 0.35em;
+	font-weight: 600;
 
-	writing-mode:
-		vertical-rl;
+	letter-spacing: 0.18em;
 
-	transform:
-		rotate(180deg);
+	text-transform: uppercase;
 }
 
 .scrollLine {
-	width: 1px;
-	height: 42px;
+	display: block;
 
-	background:
-		linear-gradient(
-			to bottom,
-			rgba(
-				241,
-				238,
-				230,
-				0.24
-			),
-			var(--acid)
-		);
+	width: 34px;
+	height: 1px;
+
+	background: var(--acid);
 }
 
 .arrow {
 	color: var(--acid);
 
-	font-size: 0.95rem;
+	font-size: 0.85rem;
+}
+
+/* =========================================================
+   SORTIE
+========================================================= */
+
+.exitWash {
+	position: absolute;
+	z-index: 50;
+
+	inset: 0;
+
+	pointer-events: none;
+
+	background:
+		linear-gradient(
+			180deg,
+			transparent 0%,
+			rgba(4, 8, 5, 0.18) 45%,
+			#050805 100%
+		);
 }
 
 /* =========================================================
@@ -1049,29 +665,18 @@
 
 .vignette {
 	position: absolute;
-	z-index: 35;
+	z-index: 40;
 
 	inset: 0;
 
-	background:
-		radial-gradient(
-			ellipse at 55% 44%,
-			transparent 42%,
-			rgba(
-				0,
-				0,
-				0,
-				0.1
-			) 70%,
-			rgba(
-				0,
-				0,
-				0,
-				0.42
-			) 100%
-		);
-
 	pointer-events: none;
+
+	box-shadow:
+		inset
+		0
+		0
+		145px
+		rgba(0, 0, 0, 0.36);
 }
 
 /* =========================================================
@@ -1080,73 +685,87 @@
 
 .grain {
 	position: absolute;
-	z-index: 36;
+	z-index: 41;
 
-	inset: -10%;
-
-	opacity: 0.018;
+	inset: -20%;
 
 	pointer-events: none;
 
+	opacity: 0.04;
+
 	background-image:
-		repeating-radial-gradient(
-			circle at 18% 32%,
-			rgba(
-				255,
-				255,
-				255,
-				0.54
-			) 0,
-			rgba(
-				255,
-				255,
-				255,
-				0.54
-			) 0.4px,
-			transparent 0.6px,
-			transparent 3px
+		radial-gradient(
+			rgba(255, 255, 255, 0.28)
+			0.55px,
+			transparent 0.55px
 		);
 
-	background-size: 8px 8px;
-
-	mix-blend-mode: soft-light;
+	background-size: 4px 4px;
 
 	animation:
-		grainShift
-		4s
-		ease-in-out
-		infinite
-		alternate;
-
-	will-change: transform;
+		grainMove
+		8s
+		steps(8)
+		infinite;
 }
 
-@keyframes grainShift {
+@keyframes grainMove {
 	0% {
 		transform:
-			translate3d(
-				-0.2%,
-				0.15%,
-				0
-			);
+			translate(0, 0);
+	}
+
+	25% {
+		transform:
+			translate(-2%, 1%);
 	}
 
 	50% {
 		transform:
-			translate3d(
-				0.2%,
-				-0.15%,
-				0
-			);
+			translate(1%, -2%);
+	}
+
+	75% {
+		transform:
+			translate(2%, 2%);
 	}
 
 	100% {
 		transform:
-			translate3d(
-				0.1%,
-				0.2%,
-				0
+			translate(0, 0);
+	}
+}
+
+/* =========================================================
+   LARGE DESKTOP
+========================================================= */
+
+@media (min-width: 1800px) {
+	.statement {
+		width:
+			min(
+				1380px,
+				82vw
 			);
+	}
+
+	.statement h1 {
+		font-size:
+			clamp(
+				4.4rem,
+				5.6vw,
+				7rem
+			);
+	}
+
+	.depthLeft,
+	.depthRight {
+		width: 39vw;
+	}
+
+	.frontLeft,
+	.frontRight {
+		width: 45vw;
 	}
 }
 
@@ -1155,52 +774,45 @@
 ========================================================= */
 
 @media (max-width: 1100px) {
-	.statement {
-		top: 38.5%;
-		left: 4vw;
-
-		width: 91vw;
-
-		h1 {
-			font-size:
-				clamp(
-					2.9rem,
-					6.2vw,
-					5.6rem
-				);
-
-			line-height: 0.94;
-		}
-	}
-
-	.line:first-child,
-	.lineTwo {
-		transform:
-			translateY(-0.55em);
-	}
-
-	.lineTwo {
-		margin-left: 4vw;
-	}
-
-	.lineThree {
-		margin-top: 0.14em;
-	}
-
-	.lineAccent {
-		margin-left: 5vw;
-	}
-
-	.shardOne {
-		right: 20vw;
-	}
-
-	.shardTwo {
-		right: 1vw;
-	}
-
 	.sideRail {
 		display: none;
+	}
+
+	.statement {
+		width: 90vw;
+	}
+
+	.statement h1 {
+		font-size:
+			clamp(
+				3rem,
+				7vw,
+				5.5rem
+			);
+	}
+
+	.depthLeft {
+		left: -18vw;
+
+		width: 62vw;
+	}
+
+	.depthRight {
+		right: -18vw;
+
+		width: 62vw;
+	}
+
+	.frontLeft {
+		left: -24vw;
+
+		width: 68vw;
+	}
+
+	.frontRight {
+		right: -24vw;
+
+		width: 68vw;
 	}
 }
 
@@ -1209,112 +821,106 @@
 ========================================================= */
 
 @media (max-width: 760px) {
-	.depthImage { object-position: 47% center; }
-
 	.hero {
-		min-height: 205svh;
+		min-height: 190svh;
 	}
 
 	.stage {
-		height:
-			max(
-				560px,
-				100svh
-			);
-
-		min-height: 0;
+		min-height: 580px;
 	}
 
-	.depthLayer {
+	.backgroundLayer {
 		inset:
-			-6% -48%
-			-6% -24%;
-
-		background-position:
-			47% center;
+			-5%
+			-32%;
 	}
 
-	.fragmentsLayer {
-		inset:
-			-3% -58%
-			-5% -30%;
+	.depthLeft {
+		top: 1vh;
+		left: -48vw;
+
+		width: 110vw;
+		height: 94vh;
 	}
 
-	.topbar {
-		padding:
-			21px 20px;
+	.depthRight {
+		top: 0;
+		right: -48vw;
 
-		.name,
-		.contact {
-			font-size:
-				0.77rem;
-		}
+		width: 110vw;
+		height: 94vh;
+	}
 
-		.contact span {
-			display: none;
-		}
+	.frontLeft {
+		left: -58vw;
+		bottom: -10vh;
+
+		width: 122vw;
+		height: 72vh;
+	}
+
+	.frontRight {
+		right: -58vw;
+		bottom: -10vh;
+
+		width: 122vw;
+		height: 72vh;
 	}
 
 	.kicker {
 		top:
 			max(
-				88px,
+				92px,
 				13svh
 			);
 
 		left: 20px;
 		right: 20px;
 
-		gap: 10px;
+		gap: 12px;
 
-		font-size: 0.58rem;
+		font-size: 0.56rem;
+
 		line-height: 1.5;
+	}
 
-		letter-spacing:
-			0.16em;
+	.kicker span {
+		flex-shrink: 0;
 
-		span {
-			width: 23px;
-
-			flex-shrink: 0;
-		}
+		width: 26px;
 	}
 
 	.statement {
-		top: 33%;
+		top: 30%;
+
 		left: 20px;
 
 		width:
 			calc(
 				100% - 40px
 			);
+	}
 
-		h1 {
-			font-size:
-				clamp(
-					1.95rem,
-					9.4vw,
-					3.55rem
-				);
+	.statement h1 {
+		font-size:
+			clamp(
+				2.2rem,
+				10.3vw,
+				4.2rem
+			);
 
-			line-height: 1;
+		line-height: 0.96;
 
-			letter-spacing:
-				-0.055em;
-		}
+		letter-spacing: -0.055em;
 	}
 
 	.line {
-		width: auto;
-		max-width: 100%;
-
 		white-space: normal;
 	}
 
 	.line:first-child,
 	.lineTwo {
-		transform:
-			translateY(-0.36em);
+		translate: 0 -0.38em;
 	}
 
 	.lineTwo,
@@ -1324,69 +930,15 @@
 	}
 
 	.lineThree {
-		margin-top: 0.18em;
-	}
-
-	.lineAccent {
-		margin-top: 0.06em;
-	}
-
-	.shardOne {
-		top: 5vh;
-		right: 5vw;
-
-		width: 34vw;
-		height: 49vh;
-
-		opacity: 0.34;
-	}
-
-	.shardTwo {
-		top: 31vh;
-		right: -12vw;
-
-		width: 48vw;
-		height: 32vh;
-
-		opacity: 0.42;
-	}
-
-	.shardThree {
-		right: -22vw;
-		bottom: -2vh;
-
-		width: 68vw;
-		height: 27vh;
-
-		opacity: 0.4;
-	}
-
-	.lightSweep {
-		top: 35%;
-		left: 5%;
-
-		width: 110vw;
-		height: 17vh;
-	}
-
-	.orangeFracture {
-		top: 63%;
-		right: -14%;
-
-		width: 58vw;
-	}
-
-	.sideRail {
-		display: none;
+		margin-top: 0.3em;
 	}
 
 	.scrollHint {
-		left: auto;
-		right: 20px;
+		left: 20px;
 
 		bottom:
 			max(
-				16px,
+				18px,
 				env(
 					safe-area-inset-bottom
 				)
@@ -1397,112 +949,95 @@
 		display: none;
 	}
 
-	.scrollLine {
-		height: 24px;
+	.depthImage {
+		filter:
+			saturate(0.76)
+			brightness(0.6)
+			contrast(1.05);
 	}
 
-	.grain {
-		opacity: 0.012;
+	.frontImage {
+		filter:
+			saturate(0.88)
+			brightness(0.78)
+			contrast(1.05);
+	}
+
+	.readability {
+		background:
+			linear-gradient(
+				90deg,
+				rgba(
+					2,
+					5,
+					3,
+					0.58
+				),
+				rgba(
+					2,
+					5,
+					3,
+					0.24
+				)
+				75%,
+				rgba(
+					2,
+					5,
+					3,
+					0.15
+				)
+			);
 	}
 }
 
 /* =========================================================
-   TRÈS GRAND ÉCRAN
+   PETIT MOBILE
 ========================================================= */
 
-@media (min-width: 1800px) {
-	.statement {
-		left:
-			max(
-				5vw,
-				calc(
-					(100vw - 1720px) / 2
-				)
+@media (max-width: 430px) {
+	.statement h1 {
+		font-size:
+			clamp(
+				2rem,
+				10vw,
+				3.4rem
 			);
-
-		width:
-			min(
-				1300px,
-				82vw
-			);
-
-		h1 {
-			font-size:
-				clamp(
-					4.4rem,
-					5.6vw,
-					7rem
-				);
-		}
 	}
 
 	.kicker {
-		left:
-			max(
-				5vw,
-				calc(
-					(100vw - 1720px) / 2
-				)
-			);
+		font-size: 0.52rem;
+
+		letter-spacing: 0.18em;
 	}
 }
 
 /* =========================================================
-   ÉCRAN PEU HAUT
+   ÉCRAN BAS
 ========================================================= */
 
-@media (max-height: 600px) and (min-width: 600px) {
+@media (max-height: 650px) and (min-width: 761px) {
 	.stage {
-		height: 100svh;
 		min-height: 0;
 	}
 
 	.kicker {
 		top: 80px;
-
-		font-size: 0.58rem;
 	}
 
 	.statement {
-		top: 38%;
-		left: 5vw;
-
-		width: 88vw;
+		top: 32%;
 	}
 
 	.statement h1 {
 		font-size:
 			clamp(
-				1.3rem,
-				6svh,
-				2.35rem
+				2.5rem,
+				6.3vh,
+				4rem
 			);
-
-		line-height: 1;
 	}
 
-	.line {
-		white-space: nowrap;
-	}
-
-	.line:first-child,
-	.lineTwo {
-		transform:
-			translateY(-0.3em);
-	}
-
-	.lineTwo,
-	.lineThree,
-	.lineAccent {
-		margin-left: 0;
-	}
-
-	.lineThree {
-		margin-top: 0.1em;
-	}
-
-	.sideRail,
-	.scrollHint {
+	.sideRail {
 		display: none;
 	}
 }
@@ -1512,32 +1047,45 @@
 ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-	.hero { min-height: 100svh; }
+	.hero {
+		min-height: 100svh;
+	}
 
+	.backgroundLayer,
 	.depthLayer,
-	.fragmentsLayer,
-	.statement,
-	.glassShard,
-	.orangeFracture,
-	.lightSweep {
+	.frontLayer,
+	.particlesLayer,
+	.statement {
 		will-change: auto;
+	}
+
+	.backgroundImage,
+	.depthImage,
+	.frontImage {
+		transform: none;
 	}
 
 	.grain {
 		animation: none;
 	}
 
-	.glassReflection {
-		transition: none;
-	}
-
-	.topbar .contact span,
 	.projectsLink i {
 		transition: none;
 	}
 }
 
-/* Keep the grain texture, without a continuously moving full-screen layer on touch. */
+/* =========================================================
+   TOUCH
+========================================================= */
+
 @media (pointer: coarse) {
-	.grain { animation: none; will-change: auto; }
+	.backgroundImage,
+	.depthImage,
+	.frontImage {
+		transform: none;
+	}
+
+	.grain {
+		animation: none;
+	}
 }

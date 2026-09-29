@@ -1,0 +1,38 @@
+.field {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+
+.particle {
+	position: absolute;
+	width: var(--size);
+	height: var(--size);
+	border-radius: 50%;
+	background: #e6f7a5;
+	box-shadow: 0 0 4px #c6ed6580;
+	opacity: 0.8;
+	animation: rise var(--duration) linear var(--delay) infinite;
+}
+
+.near {
+	background: #f4f7dc;
+	box-shadow: 0 0 5px #d7ed9370;
+}
+
+@keyframes rise {
+	0% { transform: translate3d(0, 0, 0); opacity: 0; }
+	12% { opacity: 0.8; }
+	65% { opacity: 0.65; }
+	100% { transform: translate3d(var(--drift), -48svh, 0); opacity: 0; }
+}
+
+@media (max-width: 760px), (pointer: coarse) {
+	.particle:nth-child(4n + 2),
+	.particle:nth-child(4n + 3) { display: none; }
+	.particle { animation-duration: calc(var(--duration) * 1.4); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.particle { animation: none; opacity: 0.65; }
+}

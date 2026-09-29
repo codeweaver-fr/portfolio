@@ -1,338 +1,431 @@
 "use client";
 
 import Image from "next/image";
-
 import {
 	m as motion,
 	useReducedMotion,
 	useSpring,
 	useTransform,
 } from "motion/react";
-import { useEffect, useRef, type PointerEvent } from "react";
+import {
+	useEffect,
+	useRef,
+	type PointerEvent,
+} from "react";
 
 import { useSectionScroll } from "@/hooks/useSectionScroll";
 
+import { HeroParticles } from "./HeroParticles";
+
 import styles from "./Hero.module.scss";
+
+const easeOut = [0.16, 1, 0.3, 1] as const;
 
 export function Hero() {
 	const heroRef = useRef<HTMLElement>(null);
 	const stageRef = useRef<HTMLDivElement>(null);
+
 	const pointerFrame = useRef(0);
-	const pointerPosition = useRef({ x: 0, y: 0 });
-	useEffect(() => () => cancelAnimationFrame(pointerFrame.current), []);
+
+	const pointerPosition = useRef({
+		x: 0,
+		y: 0,
+	});
 
 	const reduceMotion = useReducedMotion();
 
-	const { scrollYProgress } = useSectionScroll(heroRef, ["start start", "end end"], Boolean(reduceMotion));
+	useEffect(() => {
+		return () => {
+			cancelAnimationFrame(
+				pointerFrame.current,
+			);
+		};
+	}, []);
 
-	const smoothProgress = useSpring(scrollYProgress, {
-		stiffness: 400,
-		damping: 40,
-		mass: 1,
-		restDelta: 0.0005,
-	});
+	const { scrollYProgress } =
+		useSectionScroll(
+			heroRef,
+			[
+				"start start",
+				"end end",
+			],
+			Boolean(reduceMotion),
+		);
+
+	const smoothProgress =
+		useSpring(
+			scrollYProgress,
+			{
+				stiffness: 180,
+				damping: 30,
+				mass: 0.45,
+				restDelta: 0.0005,
+			},
+		);
 
 	const progress = reduceMotion
 		? scrollYProgress
 		: smoothProgress;
 
-	const timeline = [0, 0.03, 0.64, 1];
+	/* =====================================================
+	   FOND
+	===================================================== */
 
-	const sceneY = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, -68, -96],
-	);
+	const backgroundY =
+		useTransform(
+			progress,
+			[0, 0.65, 1],
+			reduceMotion
+				? [0, 0, 0]
+				: [0, -14, -32],
+		);
 
-	const depthX = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, -8, -18],
-	);
+	const backgroundScale =
+		useTransform(
+			progress,
+			[0, 1],
+			reduceMotion
+				? [1.04, 1.04]
+				: [1.04, 1.16],
+		);
 
-	const depthY = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, 12, 25],
-	);
+	/* =====================================================
+	   SECOND PLAN — GAUCHE
+	===================================================== */
 
-	const depthScale = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [1.05, 1.05, 1.05, 1.05]
-			: [1.05, 1.05, 1.068, 1.09],
-	);
+	const depthLeftX =
+		useTransform(
+			progress,
+			[0, 0.65, 1],
+			reduceMotion
+				? ["0vw", "0vw", "0vw"]
+				: ["0vw", "-3vw", "-8vw"],
+		);
 
-	const depthOpacity = useTransform(
-		progress,
-		[0, 0.03, 0.66, 0.86, 1],
-		[1, 1, 1, 0.76, 0.45],
-	);
+	const depthLeftY =
+		useTransform(
+			progress,
+			[0, 0.65, 1],
+			reduceMotion
+				? [0, 0, 0]
+				: [0, 16, 34],
+		);
 
-	const fragmentsX = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, 17, 34],
-	);
+	const depthLeftScale =
+		useTransform(
+			progress,
+			[0, 1],
+			reduceMotion
+				? [1.02, 1.02]
+				: [1.02, 1.07],
+		);
 
-	const fragmentsY = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, -18, -36],
-	);
+	/* =====================================================
+	   SECOND PLAN — DROITE
+	===================================================== */
 
-	const fragmentsRotate = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, 0.45, 0.9],
-	);
+	const depthRightX =
+		useTransform(
+			progress,
+			[0, 0.65, 1],
+			reduceMotion
+				? ["0vw", "0vw", "0vw"]
+				: ["0vw", "3vw", "8vw"],
+		);
 
-	const fragmentsScale = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [1.02, 1.02, 1.02, 1.02]
-			: [1.02, 1.02, 1.035, 1.052],
-	);
+	const depthRightY =
+		useTransform(
+			progress,
+			[0, 0.65, 1],
+			reduceMotion
+				? [0, 0, 0]
+				: [0, 12, 28],
+		);
 
-	const fragmentsOpacity = useTransform(
-		progress,
-		[0, 0.03, 0.64, 0.88, 1],
-		[0.16, 0.16, 0.19, 0.07, 0],
-	);
+	const depthRightScale =
+		useTransform(
+			progress,
+			[0, 1],
+			reduceMotion
+				? [1.02, 1.02]
+				: [1.02, 1.065],
+		);
 
-	const titleX = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, -4, -9],
-	);
+	const depthOpacity =
+		useTransform(
+			progress,
+			[
+				0,
+				0.65,
+				0.86,
+				1,
+			],
+			[
+				0.72,
+				0.72,
+				0.42,
+				0.1,
+			],
+		);
 
-	const titleOpacity = useTransform(
-		progress,
-		[0, 0.03, 0.67, 0.86, 1],
-		[1, 1, 1, 0.42, 0],
-	);
+	/* =====================================================
+	   PREMIER PLAN — GAUCHE
+	===================================================== */
 
-	const shardOneX = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, -10, -20],
-	);
+	const frontLeftX =
+		useTransform(
+			progress,
+			[0, 0.65, 1],
+			reduceMotion
+				? ["0vw", "0vw", "0vw"]
+				: ["0vw", "-7vw", "-16vw"],
+		);
 
-	const shardOneRotate = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [-4, -4, -4, -4]
-			: [-4, -4, -4.65, -5.4],
-	);
+	const frontLeftY =
+		useTransform(
+			progress,
+			[0, 0.65, 1],
+			reduceMotion
+				? [0, 0, 0]
+				: [0, -24, -58],
+		);
 
-	const shardOneScale = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [1, 1, 1, 1]
-			: [1, 1, 1.01, 1.02],
-	);
+	const frontLeftScale =
+		useTransform(
+			progress,
+			[0, 1],
+			reduceMotion
+				? [1.03, 1.03]
+				: [1.03, 1.2],
+		);
 
-	const shardTwoX = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, 10, 22],
-	);
+	const frontLeftRotate =
+		useTransform(
+			progress,
+			[0, 1],
+			reduceMotion
+				? [0, 0]
+				: [0, -0.8],
+		);
 
-	const shardTwoRotate = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [3, 3, 3, 3]
-			: [3, 3, 3.7, 4.4],
-	);
+	/* =====================================================
+	   PREMIER PLAN — DROITE
+	===================================================== */
 
-	const shardTwoScale = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [1, 1, 1, 1]
-			: [1, 1, 1.009, 1.018],
-	);
+	const frontRightX =
+		useTransform(
+			progress,
+			[0, 0.65, 1],
+			reduceMotion
+				? ["0vw", "0vw", "0vw"]
+				: ["0vw", "7vw", "16vw"],
+		);
 
-	const shardThreeX = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, 14, 26],
-	);
+	const frontRightY =
+		useTransform(
+			progress,
+			[0, 0.65, 1],
+			reduceMotion
+				? [0, 0, 0]
+				: [0, -28, -64],
+		);
 
-	const shardThreeRotate = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [-2, -2, -2, -2]
-			: [-2, -2, -1.1, 0],
-	);
+	const frontRightScale =
+		useTransform(
+			progress,
+			[0, 1],
+			reduceMotion
+				? [1.03, 1.03]
+				: [1.03, 1.2],
+		);
 
-	const shardThreeScale = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [1, 1, 1, 1]
-			: [1, 1, 1.012, 1.022],
-	);
+	const frontRightRotate =
+		useTransform(
+			progress,
+			[0, 1],
+			reduceMotion
+				? [0, 0]
+				: [0, 0.8],
+		);
 
-	const sweepX = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? ["55vw", "55vw", "55vw", "55vw"]
-			: ["55vw", "55vw", "2vw", "-38vw"],
-	);
+	const frontOpacity =
+		useTransform(
+			progress,
+			[
+				0,
+				0.62,
+				0.84,
+				1,
+			],
+			[
+				0.9,
+				0.9,
+				0.48,
+				0.06,
+			],
+		);
 
-	const sweepY = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? ["25vh", "25vh", "25vh", "25vh"]
-			: ["25vh", "25vh", "10vh", "-3vh"],
-	);
+	/* =====================================================
+	   PARTICULES
+	===================================================== */
 
-	const sweepRotate = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [-15, -15, -15, -15]
-			: [-15, -15, -12.5, -10],
-	);
+	const particlesY =
+		useTransform(
+			progress,
+			[0, 1],
+			reduceMotion
+				? [0, 0]
+				: [0, -160],
+		);
 
-	const sweepScale = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [0.8, 0.8, 0.8, 0.8]
-			: [0.8, 0.8, 1.05, 1.22],
-	);
+	const particlesX =
+		useTransform(
+			progress,
+			[0, 1],
+			reduceMotion
+				? [0, 0]
+				: [0, 18],
+		);
 
-	const sweepOpacity = useTransform(
-		progress,
-		[0, 0.025, 0.1, 0.58, 0.78, 1],
-		[0, 0, 0.55, 0.6, 0.16, 0],
-	);
+	const particlesNearY = useTransform(progress, [0, 1], reduceMotion ? [0, 0] : [0, -280]);
+    const particlesScale = useTransform(progress, [0, 1], reduceMotion ? [1, 1] : [1, 1.18]);
+    const headlineLeft = useTransform(progress, [0, 0.25, 1], reduceMotion ? ["0vw", "0vw", "0vw"] : ["0vw", "0vw", "-3vw"]);
+    const headlineRight = useTransform(progress, [0, 0.25, 1], reduceMotion ? ["0vw", "0vw", "0vw"] : ["0vw", "0vw", "3vw"]);
+    const contentScale = useTransform(progress, [0, 0.3, 1], reduceMotion ? [1, 1, 1] : [1, 1, 0.96]);
 
-	const fractureX = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, -15, -30],
-	);
+    const particlesOpacity =
+		useTransform(
+			progress,
+			[
+				0,
+				0.68,
+				0.9,
+				1,
+			],
+			[
+				1,
+				1,
+				0.65,
+				0,
+			],
+		);
 
-	const fractureY = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, -7, -14],
-	);
+	/* =====================================================
+	   CONTENU
+	===================================================== */
 
-	const fractureScaleX = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [0.85, 0.85, 0.85, 0.85]
-			: [0.85, 0.85, 1.02, 1.1],
-	);
+	const contentY =
+		useTransform(
+			progress,
+			[0, 0.4, 1],
+			reduceMotion
+				? [0, 0, 0]
+				: [0, -18, -130],
+		);
 
-	const fractureOpacity = useTransform(
-		progress,
-		[0, 0.03, 0.62, 0.82, 1],
-		[0.45, 0.45, 0.82, 0.18, 0],
-	);
+	const contentOpacity =
+		useTransform(
+			progress,
+			[
+				0,
+				0.62,
+				0.82,
+				1,
+			],
+			[
+				1,
+				1,
+				0.48,
+				0,
+			],
+		);
 
-	const exitWashOpacity = useTransform(
-		progress,
-		[0, 0.7, 0.88, 1],
-		[0, 0, 0.34, 1],
-	);
+	const kickerOpacity =
+		useTransform(
+			progress,
+			[
+				0,
+				0.64,
+				0.83,
+			],
+			[
+				1,
+				1,
+				0,
+			],
+		);
 
-	const kickerOpacity = useTransform(
-		progress,
-		[0, 0.03, 0.66, 0.82],
-		[1, 1, 0.65, 0],
-	);
+	const railOpacity =
+		useTransform(
+			progress,
+			[
+				0,
+				0.68,
+				0.88,
+			],
+			[
+				1,
+				1,
+				0,
+			],
+		);
 
-	const railOpacity = useTransform(
-		progress,
-		[0, 0.03, 0.69, 0.86],
-		[1, 1, 0.68, 0],
-	);
+	const scrollOpacity =
+		useTransform(
+			progress,
+			[
+				0,
+				0.03,
+				0.12,
+			],
+			[
+				1,
+				0.75,
+				0,
+			],
+		);
 
-	const scrollOpacity = useTransform(
-		progress,
-		[0, 0.025, 0.1],
-		[1, 0.7, 0],
-	);
+	const exitOpacity =
+		useTransform(
+			progress,
+			[
+				0,
+				0.74,
+				0.9,
+				1,
+			],
+			[
+				0,
+				0,
+				0.42,
+				1,
+			],
+		);
 
-	/* ======================================================
-	   TILT 3D DE LA SCÈNE
-	====================================================== */
-
-	const stageTiltX = useTransform(
-		progress,
-		timeline,
-		reduceMotion
-			? [0, 0, 0, 0]
-			: [0, 0, -1.4, -2.6],
-	);
-
-	const tiltPointerX = useSpring(0, {
-		stiffness: 120,
-		damping: 18,
-		mass: 0.4,
-	});
-
-	const tiltPointerY = useSpring(0, {
-		stiffness: 120,
-		damping: 18,
-		mass: 0.4,
-	});
-
-	/* ======================================================
-	   ENTRÉE AU MONTAGE
-	====================================================== */
-
-	const easeOut = [0.16, 1, 0.3, 1] as const;
+	/* =====================================================
+	   ENTRÉE
+	===================================================== */
 
 	const fadeUp = {
 		hidden: {
 			opacity: 0,
-			y: reduceMotion ? 0 : 24,
+			y: reduceMotion
+				? 0
+				: 28,
 		},
+
 		show: (delay: number) => ({
 			opacity: 1,
 			y: 0,
+
 			transition: {
-				duration: reduceMotion ? 0 : 1,
+				duration:
+					reduceMotion
+						? 0
+						: 1,
+
 				delay,
+
 				ease: easeOut,
 			},
 		}),
@@ -342,88 +435,119 @@ export function Hero() {
 		hidden: {
 			opacity: 0,
 		},
+
 		show: (delay: number) => ({
 			opacity: 1,
+
 			transition: {
-				duration: reduceMotion ? 0 : 1.2,
+				duration:
+					reduceMotion
+						? 0
+						: 1.25,
+
 				delay,
+
 				ease: easeOut,
 			},
 		}),
 	};
 
+	/* =====================================================
+	   SOURIS
+	===================================================== */
+
 	function handlePointerMove(
 		event: PointerEvent<HTMLDivElement>,
 	) {
-		if (!stageRef.current || reduceMotion || event.pointerType !== "mouse") {
+		if (
+			!stageRef.current ||
+			reduceMotion ||
+			event.pointerType !== "mouse"
+		) {
 			return;
 		}
 
-		pointerPosition.current = { x: event.clientX, y: event.clientY };
-		if (pointerFrame.current) return;
-		pointerFrame.current = requestAnimationFrame(() => {
-			pointerFrame.current = 0;
-			if (!stageRef.current) return;
-			const rect = stageRef.current.getBoundingClientRect();
+		pointerPosition.current = {
+			x: event.clientX,
+			y: event.clientY,
+		};
 
-		const x =
-			((pointerPosition.current.x - rect.left) /
-				rect.width) *
-			100;
+		if (pointerFrame.current) {
+			return;
+		}
 
-		const y =
-			((pointerPosition.current.y - rect.top) /
-				rect.height) *
-			100;
+		pointerFrame.current =
+			requestAnimationFrame(
+				() => {
+					pointerFrame.current = 0;
 
-		const dx = (x - 50) * 0.085;
-		const dy = (y - 50) * 0.07;
+					if (!stageRef.current) {
+						return;
+					}
 
-		stageRef.current.style.setProperty(
-			"--pointer-x",
-			`${x}%`,
-		);
+					const rect =
+						stageRef.current.getBoundingClientRect();
 
-		stageRef.current.style.setProperty(
-			"--pointer-y",
-			`${y}%`,
-		);
+					const x =
+						((pointerPosition.current.x -
+							rect.left) /
+							rect.width) *
+						100;
 
-		stageRef.current.style.setProperty(
-			"--pointer-dx",
-			`${dx}px`,
-		);
+					const y =
+						((pointerPosition.current.y -
+							rect.top) /
+							rect.height) *
+						100;
 
-		stageRef.current.style.setProperty(
-			"--pointer-dy",
-			`${dy}px`,
-		);
+					const dx =
+						(x - 50) * 0.09;
 
-		tiltPointerY.set(
-			(x - 50) * -0.03,
-		);
+					const dy =
+						(y - 50) * 0.07;
 
-		tiltPointerX.set(
-			(y - 50) * 0.025,
-		);
-		});
+					stageRef.current.style.setProperty(
+						"--pointer-x",
+						`${x}%`,
+					);
+
+					stageRef.current.style.setProperty(
+						"--pointer-y",
+						`${y}%`,
+					);
+
+					stageRef.current.style.setProperty(
+						"--pointer-dx",
+						`${dx}px`,
+					);
+
+					stageRef.current.style.setProperty(
+						"--pointer-dy",
+						`${dy}px`,
+					);
+				},
+			);
 	}
 
 	function handlePointerLeave() {
-		cancelAnimationFrame(pointerFrame.current);
+		cancelAnimationFrame(
+			pointerFrame.current,
+		);
+
 		pointerFrame.current = 0;
+
 		if (!stageRef.current) {
 			return;
 		}
 
 		stageRef.current.style.setProperty(
 			"--pointer-x",
-			"70%",
+			"65%",
 		);
 
 		stageRef.current.style.setProperty(
 			"--pointer-y",
-			"38%",
+			"42%",
 		);
 
 		stageRef.current.style.setProperty(
@@ -435,9 +559,6 @@ export function Hero() {
 			"--pointer-dy",
 			"0px",
 		);
-
-		tiltPointerX.set(0);
-		tiltPointerY.set(0);
 	}
 
 	return (
@@ -452,430 +573,371 @@ export function Hero() {
 				onPointerMove={handlePointerMove}
 				onPointerLeave={handlePointerLeave}
 			>
+				{/* =================================================
+				    FOND
+				================================================= */}
+
 				<motion.div
+					className={styles.backgroundLayer}
+					initial="hidden"
+					animate="show"
+					custom={0}
+					variants={fadeIn}
 					style={{
-						rotateX: reduceMotion
-							? 0
-							: stageTiltX,
-						rotateY: reduceMotion
-							? 0
-							: tiltPointerY,
-						transformPerspective: 1400,
-						transformStyle:
-							"preserve-3d",
-						width: "100%",
-						height: "100%",
+						y: backgroundY,
+						scale: backgroundScale,
+					}}
+					aria-hidden="true"
+				>
+					<Image
+						src="/images/hero/hero-bg.webp"
+						alt=""
+						fill
+						preload
+						sizes="(max-width: 760px) 164vw, 108vw"
+						className={
+							styles.backgroundImage
+						}
+					/>
+				</motion.div>
+
+				{/* =================================================
+				    SECOND PLAN GAUCHE
+				================================================= */}
+
+				<motion.div
+					className={`${styles.depthLayer} ${styles.depthLeft}`}
+					initial="hidden"
+					animate="show"
+					custom={0.08}
+					variants={fadeIn}
+					style={{
+						x: depthLeftX,
+						y: depthLeftY,
+						scale: depthLeftScale,
+						opacity: depthOpacity,
+					}}
+					aria-hidden="true"
+				>
+					<Image
+						src="/images/hero/hero-depth-left.webp"
+						alt=""
+						fill
+						loading="eager"
+						sizes="(max-width: 760px) 110vw, (max-width: 1100px) 62vw, 43vw"
+						className={styles.depthImage}
+					/>
+				</motion.div>
+
+				{/* =================================================
+				    SECOND PLAN DROITE
+				================================================= */}
+
+				<motion.div
+					className={`${styles.depthLayer} ${styles.depthRight}`}
+					initial="hidden"
+					animate="show"
+					custom={0.12}
+					variants={fadeIn}
+					style={{
+						x: depthRightX,
+						y: depthRightY,
+						scale: depthRightScale,
+						opacity: depthOpacity,
+					}}
+					aria-hidden="true"
+				>
+					<Image
+						src="/images/hero/hero-depth-right.webp"
+						alt=""
+						fill
+						loading="eager"
+						sizes="(max-width: 760px) 110vw, (max-width: 1100px) 62vw, 43vw"
+						className={styles.depthImage}
+					/>
+				</motion.div>
+
+				{/* =================================================
+				    PARTICULES CSS
+				================================================= */}
+
+				<motion.div
+                    className={styles.particlesLayer}
+                    style={{ x: particlesX, y: particlesY, opacity: particlesOpacity }}
+                    aria-hidden="true"
+                >
+                    <HeroParticles />
+                </motion.div>
+                <motion.div
+                    className={styles.particlesLayer}
+                    style={{ y: particlesNearY, scale: particlesScale, opacity: particlesOpacity }}
+                    aria-hidden="true"
+                >
+                    <HeroParticles near />
+                </motion.div>
+
+				{/* =================================================
+				    PREMIER PLAN GAUCHE
+				================================================= */}
+
+				<motion.div
+					className={`${styles.frontLayer} ${styles.frontLeft}`}
+					initial="hidden"
+					animate="show"
+					custom={0.16}
+					variants={fadeIn}
+					style={{
+						x: frontLeftX,
+						y: frontLeftY,
+						scale: frontLeftScale,
+						rotate: frontLeftRotate,
+						opacity: frontOpacity,
+					}}
+					aria-hidden="true"
+				>
+					<Image
+						src="/images/hero/hero-front-left.webp"
+						alt=""
+						fill
+						loading="eager"
+						sizes="(max-width: 760px) 122vw, (max-width: 1100px) 68vw, 48vw"
+						className={styles.frontImage}
+					/>
+				</motion.div>
+
+				{/* =================================================
+				    PREMIER PLAN DROITE
+				================================================= */}
+
+				<motion.div
+					className={`${styles.frontLayer} ${styles.frontRight}`}
+					initial="hidden"
+					animate="show"
+					custom={0.2}
+					variants={fadeIn}
+					style={{
+						x: frontRightX,
+						y: frontRightY,
+						scale: frontRightScale,
+						rotate: frontRightRotate,
+						opacity: frontOpacity,
+					}}
+					aria-hidden="true"
+				>
+					<Image
+						src="/images/hero/hero-front-right.webp"
+						alt=""
+						fill
+						loading="eager"
+						sizes="(max-width: 760px) 122vw, (max-width: 1100px) 68vw, 48vw"
+						className={styles.frontImage}
+					/>
+				</motion.div>
+
+				{/* =================================================
+				    ATMOSPHÈRE
+				================================================= */}
+
+				<div
+					className={styles.atmosphere}
+					aria-hidden="true"
+				/>
+
+				<div
+					className={styles.readability}
+					aria-hidden="true"
+				/>
+
+				{/* =================================================
+				    KICKER
+				================================================= */}
+
+				<motion.div
+					className={styles.kicker}
+					initial="hidden"
+					animate="show"
+					custom={0.16}
+					variants={fadeUp}
+					style={{
+						opacity: kickerOpacity,
 					}}
 				>
-					<motion.div
-						className={
-							styles.depthLayer
-						}
-						initial="hidden"
-						animate="show"
-						custom={0}
-						variants={fadeIn}
-						style={{
-							x: depthX,
-							y: depthY,
-							scale: depthScale,
-							opacity:
-								depthOpacity,
-						}}
-						aria-hidden="true"
-					>
-					<Image src="/images/hero/hero-depth.webp" alt="" fill sizes="(max-width: 760px) 172vw, 116vw" preload className={styles.depthImage} style={{ objectFit: "cover" }} />
+					<span />
+
+					Création & refonte de
+					sites web sur mesure
 				</motion.div>
 
-					<motion.div
-						className={
-							styles.fragmentsLayer
-						}
-						style={{
-							x: fragmentsX,
-							y: fragmentsY,
-							rotate:
-								fragmentsRotate,
-							scale:
-								fragmentsScale,
-							opacity:
-								fragmentsOpacity,
-						}}
-						aria-hidden="true"
-					>
-						<Image src="/images/hero/hero-fragments.webp" alt="" fill sizes="(max-width: 760px) 188vw, 114vw"  style={{ objectFit: "cover", objectPosition: "center" }} />
-					</motion.div>
+				{/* =================================================
+				    TITRE
+				================================================= */}
 
-					<div
-						className={
-							styles.atmosphere
-						}
-						aria-hidden="true"
-					/>
-
-					<div
-						className={
-							styles.readability
-						}
-						aria-hidden="true"
-					/>
-
-					{/* ==========================================
-					    POSITIONNEMENT
-					========================================== */}
-
-					<motion.div
-						className={styles.kicker}
+				<motion.div
+					className={styles.statement}
+					style={{
+						y: contentY,
+                        scale: contentScale,
+						opacity: contentOpacity,
+					}}
+				>
+					<motion.h1
 						initial="hidden"
 						animate="show"
-						custom={0.15}
+						custom={0.28}
 						variants={fadeUp}
-						style={{
-							opacity:
-								kickerOpacity,
-						}}
 					>
-						<span />
-						Création & refonte de
-						sites web sur mesure
-					</motion.div>
-
-					{/* ==========================================
-					    ACCROCHE
-					========================================== */}
-
-					<motion.div
-						className={
-							styles.statement
-						}
-						style={{
-							x: titleX,
-							y: sceneY,
-							opacity:
-								titleOpacity,
-						}}
-					>
-						<motion.h1
-							initial="hidden"
-							animate="show"
-							custom={0.3}
-							variants={fadeUp}
+						<motion.span style={{ x: headlineLeft }}
+ className={styles.line}
 						>
-							<span
+							Votre activité évolue.
+						</motion.span>
+
+						<motion.span style={{ x: headlineRight }}
+ className={`${styles.line} ${styles.lineTwo}`}
+						>
+							Votre site{" "}
+							<strong
 								className={
-									styles.line
+									styles.inlineAccent
 								}
 							>
-								Votre activité
-								évolue.
-							</span>
+								doit suivre.
+							</strong>
+						</motion.span>
 
-							<span
-								className={`${styles.line} ${styles.lineTwo}`}
-							>
-								Votre site{" "}
-								<strong
-									className={
-										styles.inlineAccent
-									}
-								>
-									doit suivre.
-								</strong>
-							</span>
+						<motion.span style={{ x: headlineLeft }}
+ className={`${styles.line} ${styles.lineThree}`}
+						>
+							Je crée et refonds
+						</motion.span>
 
-							<span
-								className={`${styles.line} ${styles.lineThree}`}
-							>
-								Je crée et
-								refonds
-							</span>
-
-							<span
+						<motion.span style={{ x: headlineRight }}
+ className={styles.line}
+						>
+							des sites web{" "}
+							<strong
 								className={
-									styles.line
+									styles.inlineAccent
 								}
 							>
-								des sites web{" "}
-								<strong
-									className={
-										styles.inlineAccent
-									}
-								>
-									sur mesure,
-								</strong>
-							</span>
+								sur mesure,
+							</strong>
+						</motion.span>
 
-							<span
-								className={`${styles.line} ${styles.lineAccent}`}
-							>
-								pensés pour vous
-								ressembler.
-							</span>
-						</motion.h1>
-					</motion.div>
-
-					{/* ==========================================
-					    VERRE
-					========================================== */}
-
-					<motion.div
-						className={`${styles.glassShard} ${styles.shardOne}`}
-						initial="hidden"
-						animate="show"
-						custom={0.45}
-						variants={fadeIn}
-						style={{
-							x: shardOneX,
-							y: sceneY,
-							rotate:
-								shardOneRotate,
-							scale:
-								shardOneScale,
-						}}
-						aria-hidden="true"
-					>
-						<div
-							className={
-								styles.glassSurface
-							}
+						<motion.span style={{ x: headlineLeft }}
+ className={`${styles.line} ${styles.lineAccent}`}
 						>
-							<div
-								className={
-									styles.glassReflection
-								}
-							/>
-
-							<div
-								className={
-									styles.glassEdge
-								}
-							/>
-						</div>
-					</motion.div>
-
-					<motion.div
-						className={`${styles.glassShard} ${styles.shardTwo}`}
-						initial="hidden"
-						animate="show"
-						custom={0.55}
-						variants={fadeIn}
-						style={{
-							x: shardTwoX,
-							y: sceneY,
-							rotate:
-								shardTwoRotate,
-							scale:
-								shardTwoScale,
-						}}
-						aria-hidden="true"
-					>
-						<div
-							className={
-								styles.glassSurface
-							}
-						>
-							<div
-								className={
-									styles.glassReflection
-								}
-							/>
-
-							<div
-								className={
-									styles.glassEdge
-								}
-							/>
-						</div>
-					</motion.div>
-
-					<motion.div
-						className={`${styles.glassShard} ${styles.shardThree}`}
-						initial="hidden"
-						animate="show"
-						custom={0.65}
-						variants={fadeIn}
-						style={{
-							x: shardThreeX,
-							y: sceneY,
-							rotate:
-								shardThreeRotate,
-							scale:
-								shardThreeScale,
-						}}
-						aria-hidden="true"
-					>
-						<div
-							className={
-								styles.glassSurface
-							}
-						>
-							<div
-								className={
-									styles.glassReflection
-								}
-							/>
-
-							<div
-								className={
-									styles.glassEdge
-								}
-							/>
-						</div>
-					</motion.div>
-
-					{/* ==========================================
-					    LUMIÈRE
-					========================================== */}
-
-					<motion.div
-						className={
-							styles.lightSweep
-						}
-						style={{
-							x: sweepX,
-							y: sweepY,
-							rotate:
-								sweepRotate,
-							scale:
-								sweepScale,
-							opacity:
-								sweepOpacity,
-						}}
-						aria-hidden="true"
-					/>
-
-					<motion.div
-						className={
-							styles.orangeFracture
-						}
-						style={{
-							x: fractureX,
-							y: fractureY,
-							scaleX:
-								fractureScaleX,
-							opacity:
-								fractureOpacity,
-						}}
-						aria-hidden="true"
-					>
-						<span />
-					</motion.div>
-
-					{/* ==========================================
-					    RAIL DROIT
-					========================================== */}
-
-					<motion.aside
-						className={
-							styles.sideRail
-						}
-						initial="hidden"
-						animate="show"
-						custom={0.75}
-						variants={fadeUp}
-						style={{
-							opacity:
-								railOpacity,
-						}}
-					>
-						<div
-							className={
-								styles.steps
-							}
-						>
-							<span
-								className={
-									styles.active
-								}
-							>
-								01
-							</span>
-
-							<span>02</span>
-							<span>03</span>
-							<span>04</span>
-						</div>
-
-						<a
-							href="#projects"
-							className={
-								styles.projectsLink
-							}
-						>
-							<span>Vers</span>
-							<span>
-								les projets
-							</span>
-							<i />
-						</a>
-					</motion.aside>
-
-					{/* ==========================================
-					    SCROLL
-					========================================== */}
-
-					<motion.div
-						className={
-							styles.scrollHint
-						}
-						initial="hidden"
-						animate="show"
-						custom={0.9}
-						variants={fadeUp}
-						style={{
-							opacity:
-								scrollOpacity,
-						}}
-						aria-hidden="true"
-					>
-						<span
-							className={
-								styles.scrollWord
-							}
-						>
-							Scroll
-						</span>
-
-						<span
-							className={
-								styles.scrollLine
-							}
-						/>
-
-						<span
-							className={
-								styles.arrow
-							}
-						>
-							↓
-						</span>
-					</motion.div>
-
-					<motion.div
-						className={
-							styles.exitWash
-						}
-						style={{
-							opacity:
-								exitWashOpacity,
-						}}
-						aria-hidden="true"
-					/>
-
-					<div
-						className={
-							styles.vignette
-						}
-						aria-hidden="true"
-					/>
-
-					<div
-						className={
-							styles.grain
-						}
-						aria-hidden="true"
-					/>
+							pensés pour vous
+							ressembler.
+						</motion.span>
+					</motion.h1>
 				</motion.div>
+
+				{/* =================================================
+				    RAIL DROIT
+				================================================= */}
+
+				<motion.aside
+					className={styles.sideRail}
+					initial="hidden"
+					animate="show"
+					custom={0.65}
+					variants={fadeUp}
+					style={{
+						opacity: railOpacity,
+					}}
+				>
+					<div className={styles.steps}>
+						<span
+							className={
+								styles.active
+							}
+						>
+							01
+						</span>
+
+						<span>02</span>
+						<span>03</span>
+						<span>04</span>
+					</div>
+
+					<a
+						href="#projects"
+						className={
+							styles.projectsLink
+						}
+					>
+						<span>Vers</span>
+
+						<span>
+							les projets
+						</span>
+
+						<i />
+					</a>
+				</motion.aside>
+
+				{/* =================================================
+				    SCROLL
+				================================================= */}
+
+				<motion.div
+					className={styles.scrollHint}
+					initial="hidden"
+					animate="show"
+					custom={0.82}
+					variants={fadeUp}
+					style={{
+						opacity: scrollOpacity,
+					}}
+					aria-hidden="true"
+				>
+					<span
+						className={
+							styles.scrollWord
+						}
+					>
+						Scroll
+					</span>
+
+					<span
+						className={
+							styles.scrollLine
+						}
+					/>
+
+					<span
+						className={styles.arrow}
+					>
+						↓
+					</span>
+				</motion.div>
+
+				{/* =================================================
+				    SORTIE
+				================================================= */}
+
+				<motion.div
+					className={styles.exitWash}
+					style={{
+						opacity: exitOpacity,
+					}}
+					aria-hidden="true"
+				/>
+
+                <div className={styles.scrollProgress} aria-hidden="true">
+                    <motion.span style={{ scaleX: progress }} />
+                </div>
+
+				<div
+					className={styles.vignette}
+					aria-hidden="true"
+				/>
+
+				<div
+					className={styles.grain}
+					aria-hidden="true"
+				/>
 			</div>
 		</section>
 	);
